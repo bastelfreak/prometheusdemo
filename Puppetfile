@@ -3,3 +3,8 @@ mod 'puppet-prometheus'
 mod 'puppet-nginx'
 mod 'puppet-ipset'
 mod 'KyleAnderson-consul'
+# dependencies
+mod 'puppetlabs-stdlib'
+mod 'puppet-archive'
+mod 'puppetlabs-concat'
+mod 'camptocamp-systemd'
