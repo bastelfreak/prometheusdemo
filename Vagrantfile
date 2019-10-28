@@ -16,6 +16,9 @@ Vagrant.configure("2") do |config|
       puppet module install puppet-r10k
       puppet cert generate puppet.local --dns_alt_names=puppet.local,puppet,puppetdb,puppetdb.local,prometheus,prometheus.local
       puppet apply -e 'include r10k'
+      sed -i 's#remote:.*#remote: https://github.com/bastelfreak/osmc2019.git#' /etc/puppetlabs/r10k/r10k.yaml
+      yum install --assumeyes git
+      r10k deploy environment production --puppetfile --verbose
     SHELL
   end
   config.vm.define "centosclient" do |centos|
