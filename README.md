@@ -2,6 +2,8 @@
 
 ## Table of contents
 
+* [Notes](#notes)
+* [Vagrant cheat sheet](#vagrant-cheat-sheet)
 
 ## Notes
 
@@ -10,6 +12,11 @@ Puppetserver. To make this work as easy as possible, we will use a CentOS 7
 base image. CentOS 8 isn't well supported yet by most modules. To prove the
 awesomenes of this setup, we will use an Archlinux (and CentOS 7 as well)
 client.
+
+Our default branch in this repository is `production`. We use r10k to deploy
+puppet environment. r10k matches git branches to those environments and the
+default environment name is production. Switching the default branch name from
+`master` to `production` is easer then updating the puppet configuration.
 
 ## Vagrant cheat sheet
 
