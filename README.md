@@ -38,6 +38,58 @@ vagrant up
 vagrant up server
 ```
 
+### Sync /etc/hosts entries to all VMs
+
+Soooooooooo, technology. Why does software suck so hard? It's a common usecase
+for Virtualbox users to spawn multiple virtual machines. In most of those
+situations, you want to connect from one virtual machine to another. On
+Windows host systems, virtual box is smart enough and does local DNS
+resolution. However, it doesn't do it on linux....
+
+As a workaround, you can write your IP-Addresses to every `/etc/hosts` file.
+This sucks. This is manual work... Thankfully, somebody wrote a Vagrant plugin
+for this job
+[Vagrant hostmanager plugin](https://github.com/devopsgroup-io/vagrant-hostmanager#vagrant-host-manager)
+
+You can add a view entries to your [Vagrantfile](./Vagrantfile).
+
+```
+config.hostmanager.enabled = true                           # Update /etc/hosts with entries from other VMs
+config.hostmanager.manage_host = false                      # Don't update /etc/hosts on the Hypervisor
+config.hostmanager.include_offline = true                   # Also document offline VMs
+```
+
+If you still want to update the hosts file on all running machines, do:
+
+```sh
+$ vagrant hostmanager
+[vagrant-hostmanager:guest] Updating hosts file on the virtual machine server...
+[vagrant-hostmanager:guest] Updating hosts file on the virtual machine centosclient...
+[vagrant-hostmanager:guest] Updating hosts file on the virtual machine archclient...
+```
+
+The `/etc/hosts` file will look like this:
+
+```
+$ cat /etc/hosts
+127.0.0.1 centosclient  centosclient
+127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
+::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
+
+## vagrant-hostmanager-start
+192.168.33.10 prometheus
+
+192.168.33.11 centosclient
+
+192.168.33.12 archclient
+
+## vagrant-hostmanager-end
+
+```
+
+The Software is smart enough to detect if the IP-Addresses are already listed
+in the file. They won't be added multiple times (it's idempotent).
+
 ### Vagrant fails to start a VM
 
 Error:

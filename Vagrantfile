@@ -1,4 +1,7 @@
 Vagrant.configure("2") do |config|
+  config.hostmanager.enabled = true                           # Update /etc/hosts with entries from other VMs
+  config.hostmanager.manage_host = false                      # Don't update /etc/hosts on the Hypervisor
+  config.hostmanager.include_offline = true                   # Also document offline VMs
   config.vm.define "server" do |server|
     server.vm.box = "centos/7"                                # base image we use
     server.vm.hostname = "prometheus"                         # hostname that's configured within the VM
