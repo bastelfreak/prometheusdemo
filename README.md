@@ -56,11 +56,11 @@ name, and try again.
 Check if Vagrant knows anything about the VM:
 
 ```
-$ vagrant global-status 
-id       name   provider   state    directory                           
+$ vagrant global-status
+id       name   provider   state    directory
 ------------------------------------------------------------------------
-02c90f7  server virtualbox poweroff /home/bastelfreak/osmc2019          
- 
+02c90f7  server virtualbox poweroff /home/bastelfreak/osmc2019
+
 The above shows information about all known Vagrant environments
 on this machine. This data is cached and may not be completely
 up-to-date (use "vagrant global-status --prune" to prune invalid
