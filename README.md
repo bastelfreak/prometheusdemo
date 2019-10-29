@@ -54,9 +54,9 @@ for this job
 You can add a view entries to your [Vagrantfile](./Vagrantfile).
 
 ```
-config.hostmanager.enabled = true                           # Update /etc/hosts with entries from other VMs
-config.hostmanager.manage_host = false                      # Don't update /etc/hosts on the Hypervisor
-config.hostmanager.include_offline = true                   # Also document offline VMs
+config.hostmanager.enabled = true         # Update /etc/hosts with entries from other VMs
+config.hostmanager.manage_host = false    # Don't update /etc/hosts on the Hypervisor
+config.hostmanager.include_offline = true # Also document offline VMs
 ```
 
 If you still want to update the hosts file on all running machines, do:
