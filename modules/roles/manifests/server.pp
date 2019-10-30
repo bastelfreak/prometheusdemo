@@ -20,4 +20,6 @@ class roles::server {
   }
   include prometheus
   include nginx
+  include ferm
+  include ipset
 }
