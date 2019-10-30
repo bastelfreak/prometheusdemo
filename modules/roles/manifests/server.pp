@@ -18,4 +18,6 @@ class roles::server {
     },
     require        => Package['unzip'],
   }
+  include prometheus
+  include nginx
 }
