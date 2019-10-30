@@ -33,7 +33,9 @@ class roles::server {
     },
     require        => Package['unzip'],
   }
-  include prometheus::server
+  class{'prometheus::server':
+    version => '2.13.1',
+  }
   include nginx
   include ferm
   include ipset
