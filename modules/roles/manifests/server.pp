@@ -36,6 +36,10 @@ class roles::server {
   class{'prometheus::server':
     version => '2.13.1',
   }
+  class{'prometheus::node_exporter':
+    extra_options => '--web.listen-address 127.0.0.1:9100',
+    version       => '0.18.1',
+  }
   include nginx
   include ferm
   include ipset
