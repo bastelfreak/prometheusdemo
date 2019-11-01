@@ -319,6 +319,7 @@ class: center, middle, inverse
 
 # Chapter 1: Exploration
 
+## Or: The Happy Phase
 ---
 
 background-image: url(blue-skies.jpg)
@@ -483,8 +484,8 @@ count: false
 ???
 
 * Prometheus collectors https://github.com/prometheus/node_exporter/#enabled-by-default
----
 
+---
 
 background-image: url(blue-skies.jpg)
 background-size: cover
@@ -511,7 +512,74 @@ promhttp_metric_handler_requests_total{code="503"} 0
 
 * There should be a type
 
-* A metric can have labels (`code` in this case)
+* A metric can have labels (`code="XXX"` in this case)
+]
+
+.footnote[[@bastelsblog](https://twitter.com/bastelsblog) for [@voxpupuliorg](https://twitter.com/voxpupuliorg)]
+
+???
+
+---
+
+background-image: url(blue-skies.jpg)
+background-size: cover
+
+.left-column[
+## Starting Point
+## Exploration
+]
+
+.right-column[
+
+* Tell your developers to expose data as prometheus metrics
+]
+
+.footnote[[@bastelsblog](https://twitter.com/bastelsblog) for [@voxpupuliorg](https://twitter.com/voxpupuliorg)]
+
+???
+
+---
+
+background-image: url(blue-skies.jpg)
+background-size: cover
+count: false
+
+.left-column[
+## Starting Point
+## Exploration
+]
+
+.right-column[
+
+* Tell your developers to expose data as prometheus metrics
+
+* Enrich your exporter with 3rd party data
+
+]
+
+.footnote[[@bastelsblog](https://twitter.com/bastelsblog) for [@voxpupuliorg](https://twitter.com/voxpupuliorg)]
+
+???
+
+---
+
+background-image: url(blue-skies.jpg)
+background-size: cover
+count: false
+
+.left-column[
+## Starting Point
+## Exploration
+]
+
+.right-column[
+
+* Tell your developers to expose data as prometheus metrics
+
+* Enrich your exporter with 3rd party data
+
+* Many applications already provide prometheus-style metrics
+
 ]
 
 .footnote[[@bastelsblog](https://twitter.com/bastelsblog) for [@voxpupuliorg](https://twitter.com/voxpupuliorg)]
@@ -519,9 +587,122 @@ promhttp_metric_handler_requests_total{code="503"} 0
 ???
 
 
+---
+
+background-image: url(blue-skies.jpg)
+background-size: cover
+count: false
+
+.left-column[
+## Starting Point
+## Exploration
+]
+
+.right-column[
+
+* Tell your developers to expose data as prometheus metrics
+
+* Enrich your exporter with 3rd party data
+
+* Many applications already provide prometheus-style metrics
+
+* There are [hundreds of exporters](https://prometheus.io/docs/instrumenting/exporters/#exporters-and-integrations) available
+]
+
+.footnote[[@bastelsblog](https://twitter.com/bastelsblog) for [@voxpupuliorg](https://twitter.com/voxpupuliorg)]
+
+???
 
 
 ---
+
+class: center, middle, inverse
+
+# Chapter 2: Integration
+
+## Or: Million ways to shoot yourself in the foot
+
+---
+
+background-image: url(blue-skies.jpg)
+background-size: cover
+
+.left-column[
+## Starting Point
+## Exploration
+## Integration
+]
+
+.right-column[
+![imagefoo](prometheus01.svg)
+
+With the [puppet/prometheus](https://github.com/voxpupuli/puppet-prometheus#puppet-prometheus) module:
+```puppet
+include prometheus::node_exporter
+```
+]
+
+.footnote[[@bastelsblog](https://twitter.com/bastelsblog) for [@voxpupuliorg](https://twitter.com/voxpupuliorg)]
+
+???
+
+---
+
+background-image: url(blue-skies.jpg)
+background-size: cover
+
+.left-column[
+## Starting Point
+## Exploration
+## Integration
+]
+
+.right-column[
+![imagefoo](prometheus01.svg)
+
+* Prometheus database scrapes all exporters
+
+* Everybody can make backups of your metrics \o/
+
+  * (Because they are available to the whole internet)
+]
+
+.footnote[[@bastelsblog](https://twitter.com/bastelsblog) for [@voxpupuliorg](https://twitter.com/voxpupuliorg)]
+
+???
+
+---
+
+background-image: url(blue-skies.jpg)
+background-size: cover
+
+.left-column[
+## Starting Point
+## Exploration
+## Integration
+]
+
+.right-column[
+* Puppet Agent/Server use TLS client certificates
+
+* Deploy nginx infront of node_exporter
+
+* Require a valid client certificate from prometheus database
+]
+
+???
+
+---
+
+
+
+
+
+
+
+
+
+
 background-image: url(blue-skies.jpg)
 background-size: cover
 count: false
