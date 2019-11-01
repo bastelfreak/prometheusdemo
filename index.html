@@ -1031,6 +1031,8 @@ ipsets and separate chains to the rescue!
 
   * You cannot mix IPv4/IPv6 in one hashmap
 
+  * Updating the ip set is independet from iptables rules
+
 * [Vox Pupuli](https://voxpupuli.org) provides [puppet/ipset](https://forge.puppet.com/puppet/ferm#puppet-ferm)
 ]
 
@@ -1060,9 +1062,99 @@ Take a look at [./examples/ipsets.pp](https://github.com/bastelfreak/osmc2019/bl
 .footnote[[@bastelsblog](https://twitter.com/bastelsblog) for [@voxpupuliorg](https://twitter.com/voxpupuliorg)]
 
 ???
+
 ---
 
+class: center, middle, inverse
 
+# Chapter 3: Conclusion
+
+## Or: \o/ ?
+
+---
+
+background-image: url(blue-skies.jpg)
+background-size: cover
+
+.left-column[
+## Starting Point
+## Exploration
+## Integration
+## Conclusion
+]
+
+.right-column[
+
+* Rolling out an exporter with Puppet is easy
+
+  * 1 line of code! (for a dev environment)
+
+  * Required config management code for a production setup is still reasonable
+]
+
+.footnote[[@bastelsblog](https://twitter.com/bastelsblog) for [@voxpupuliorg](https://twitter.com/voxpupuliorg)]
+
+???
+
+---
+
+background-image: url(blue-skies.jpg)
+background-size: cover
+count: false
+
+.left-column[
+## Starting Point
+## Exploration
+## Integration
+## Conclusion
+]
+
+.right-column[
+
+* Rolling out an exporter with Puppet is easy
+
+* [puppet/prometheus](https://forge.puppet.com/puppet/prometheus#puppet-prometheus) supports 20 famous exporters
+
+  * You can easily add support for another one
+
+  * Ping the [Vox Pupuli](https://voxpupuli.org/) people and ask for help
+]
+
+.footnote[[@bastelsblog](https://twitter.com/bastelsblog) for [@voxpupuliorg](https://twitter.com/voxpupuliorg)]
+
+???
+
+---
+
+background-image: url(blue-skies.jpg)
+background-size: cover
+count: false
+
+.left-column[
+## Starting Point
+## Exploration
+## Integration
+## Conclusion
+]
+
+.right-column[
+
+* Rolling out an exporter with Puppet is easy
+
+* [puppet/prometheus](https://forge.puppet.com/puppet/prometheus#puppet-prometheus) supports 20 famous exporters
+
+* Consul as service discovery
+
+  \+ Probably the solution that scales best
+
+  \+ Since you now have it, you can use it for even more stuff
+
+  \- More configuration effort than an actual exporter
+]
+
+.footnote[[@bastelsblog](https://twitter.com/bastelsblog) for [@voxpupuliorg](https://twitter.com/voxpupuliorg)]
+
+???
 
 ---
 
