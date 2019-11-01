@@ -8,7 +8,7 @@ Vagrant.configure("2") do |config|
     server.vm.network "private_network", ip: "192.168.33.10"
     server.vm.provider "virtualbox" do |v|
       v.name = "server"                                       # Name that's displayed within the VirtualBox UI
-      v.memory = 2028                                         # Ram in MB
+      v.memory = 3072                                         # Ram in MB
       v.cpus = 2                                              # Cores
     end
 
