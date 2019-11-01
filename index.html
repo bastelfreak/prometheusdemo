@@ -161,7 +161,7 @@ class: center, middle, inverse
 
 # Rollout all your Prometheus exporters with Puppet!
 
-## (Proudly powered by Vox Pupuli puppet modules)
+## (Proudly powered by Vox Pupuli Puppet modules)
 
 ???
 
@@ -177,7 +177,7 @@ background-size: cover
 
 * Puppet Contributor since 2012
 
-* Merging stuff on [Vox Pupuli](https://voxpupuli.org/) since 2015
+* Merging stuff on [Vox Pupuli](https://voxpupuli.org/)  (Puppet Community) since 2015
 
 * Vox Pupuli Project Management Committee member
 
@@ -187,17 +187,22 @@ background-size: cover
 
 ---
 
+class: center, middle, inverse
+
+# Let us go on a monitoring journey
+
+---
+
 background-image: url(blue-skies.jpg)
 background-size: cover
 
 .left-column[
-## Vox Pupuli
-###What?
+## Starting Point
 ]
 
 .right-column[
 
-* Maintain many many Puppet modules
+* Assume you maintain a few thousand servers
 
 ]
 
@@ -205,13 +210,318 @@ background-size: cover
 
 ???
 
-* Wir verwalten fast so viele Puppet module wie die Firma Puppet
-* This leads to some challenges, which I want to discuss today
-* 88 module während PuppetConf Oktober 2017, 92 im Januar 2018. 117 Oktober 2019
-* Puppet Inc hat 169 Oktober 2019
+---
+
+background-image: url(blue-skies.jpg)
+background-size: cover
+count: false
+
+.left-column[
+## Starting Point
+]
+
+.right-column[
+
+* Assume you maintain a few thousand servers
+
+* Assume you have at least one coworker that develops software
+
+]
+
+.footnote[[@bastelsblog](https://twitter.com/bastelsblog) for [@voxpupuliorg](https://twitter.com/voxpupuliorg)]
+
+???
 
 ---
 
+background-image: url(blue-skies.jpg)
+background-size: cover
+count: false
+
+.left-column[
+## Starting Point
+]
+
+.right-column[
+
+* Assume you maintain a few thousand servers
+
+* Assume you have at least one coworker that develops software
+
+* You have to maintain that software in production
+
+]
+
+.footnote[[@bastelsblog](https://twitter.com/bastelsblog) for [@voxpupuliorg](https://twitter.com/voxpupuliorg)]
+
+???
+
+---
+
+background-image: url(blue-skies.jpg)
+background-size: cover
+count: false
+
+.left-column[
+## Starting Point
+]
+
+.right-column[
+
+* Assume you maintain a few thousand servers
+
+* Assume you have at least one coworker that develops software
+
+* You have to maintain that software in production
+
+* All monitoring you have is really bad
+
+  * It has false positives, it isn't efficient, it's complex
+
+]
+
+.footnote[[@bastelsblog](https://twitter.com/bastelsblog) for [@voxpupuliorg](https://twitter.com/voxpupuliorg)]
+
+???
+
+---
+
+background-image: url(blue-skies.jpg)
+background-size: cover
+count: false
+
+.left-column[
+## Starting Point
+]
+
+.right-column[
+
+* Assume you maintain a few thousand servers
+
+* Assume you have at least one coworker that develops software
+
+* You have to maintain that software in production
+
+* All monitoring you have is really bad
+
+  * It has false positives, it isn't efficient, it's complex
+
+* Or you have no monitoring at all
+]
+
+.footnote[[@bastelsblog](https://twitter.com/bastelsblog) for [@voxpupuliorg](https://twitter.com/voxpupuliorg)]
+
+???
+
+---
+
+class: center, middle, inverse
+
+# Chapter 1: Exploration
+
+---
+
+background-image: url(blue-skies.jpg)
+background-size: cover
+
+.left-column[
+## Starting Point
+## Exploration
+]
+
+.right-column[
+
+* You attend your most favourite monitoring conference
+
+]
+
+.footnote[[@bastelsblog](https://twitter.com/bastelsblog) for [@voxpupuliorg](https://twitter.com/voxpupuliorg)]
+
+???
+
+---
+
+background-image: url(blue-skies.jpg)
+background-size: cover
+count: false
+
+.left-column[
+## Starting Point
+## Exploration
+]
+
+.right-column[
+
+* You attend your most favourite monitoring conference
+
+* Somebody recommends you [node_exporter](https://github.com/prometheus/node_exporter/#node-exporter)
+
+* "Just download the binary, run it as root and it works"
+
+]
+
+.footnote[[@bastelsblog](https://twitter.com/bastelsblog) for [@voxpupuliorg](https://twitter.com/voxpupuliorg)]
+
+???
+
+start prometheus-node-exporter
+curl http://localhost:9100/metrics --silent
+
+explain HELP/TYPE
+
+curl http://localhost:9100/metrics --silent | grep -v '^#'
+curl http://localhost:9100/metrics --silent | grep -v '^#' -c
+
+---
+
+background-image: url(blue-skies.jpg)
+background-size: cover
+
+.left-column[
+## Starting Point
+## Exploration
+]
+
+.right-column[
+
+* Reads many metrics from your box, expose them via HTTP
+
+  * No HTTPS, no authentication
+
+]
+
+.footnote[[@bastelsblog](https://twitter.com/bastelsblog) for [@voxpupuliorg](https://twitter.com/voxpupuliorg)]
+
+???
+
+* Prometheus collectors https://github.com/prometheus/node_exporter/#enabled-by-default
+---
+
+background-image: url(blue-skies.jpg)
+background-size: cover
+count: false
+
+.left-column[
+## Starting Point
+## Exploration
+]
+
+.right-column[
+
+* Reads many metrics from your box, expose them via HTTP
+
+  * No HTTPS, no authentication
+
+* Has many collectors, that can be enabled/disabled
+
+]
+
+.footnote[[@bastelsblog](https://twitter.com/bastelsblog) for [@voxpupuliorg](https://twitter.com/voxpupuliorg)]
+
+???
+
+* Prometheus collectors https://github.com/prometheus/node_exporter/#enabled-by-default
+---
+
+background-image: url(blue-skies.jpg)
+background-size: cover
+count: false
+
+.left-column[
+## Starting Point
+## Exploration
+]
+
+.right-column[
+
+* Reads many metrics from your box, expose them via HTTP
+
+  * No HTTPS, no authentication
+
+* Has many collectors, that can be enabled/disabled
+
+* Can read values from 3rd parties from a txt file
+
+]
+
+.footnote[[@bastelsblog](https://twitter.com/bastelsblog) for [@voxpupuliorg](https://twitter.com/voxpupuliorg)]
+
+???
+
+* Prometheus collectors https://github.com/prometheus/node_exporter/#enabled-by-default
+---
+
+background-image: url(blue-skies.jpg)
+background-size: cover
+count: false
+
+.left-column[
+## Starting Point
+## Exploration
+]
+
+.right-column[
+
+* Reads many metrics from your box, expose them via HTTP
+
+  * No HTTPS, no authentication
+
+* Has many collectors, that can be enabled/disabled
+
+* Can read values from 3rd parties from a txt file
+
+* Single binary, written in go
+
+  * Nice for dependency management, but please consider building packages
+
+  * Do not download random binaries from the internet...
+
+]
+
+.footnote[[@bastelsblog](https://twitter.com/bastelsblog) for [@voxpupuliorg](https://twitter.com/voxpupuliorg)]
+
+???
+
+* Prometheus collectors https://github.com/prometheus/node_exporter/#enabled-by-default
+---
+
+
+background-image: url(blue-skies.jpg)
+background-size: cover
+
+.left-column[
+## Starting Point
+## Exploration
+]
+
+.right-column[
+
+```sh
+# HELP Total number of scrapes by HTTP status code.
+# TYPE counter
+promhttp_metric_handler_requests_total{code="200"} 5
+promhttp_metric_handler_requests_total{code="500"} 0
+promhttp_metric_handler_requests_total{code="503"} 0
+
+```
+
+* Each metric has a name and a value
+
+* There should be a HELP
+
+* There should be a type
+
+* A metric can have labels (`code` in this case)
+]
+
+.footnote[[@bastelsblog](https://twitter.com/bastelsblog) for [@voxpupuliorg](https://twitter.com/voxpupuliorg)]
+
+???
+
+
+
+
+---
 background-image: url(blue-skies.jpg)
 background-size: cover
 count: false
