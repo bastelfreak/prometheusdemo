@@ -1,5 +1,7 @@
 class roles::client {
-  include ferm
+  class{'ferm':
+    manage_configfile => true,
+  }
   include ipset
   include nginx
   include consul

@@ -41,6 +41,8 @@ class roles::server {
     version       => '0.18.1',
   }
   include nginx
-  include ferm
+  class{'ferm':
+    manage_configfile => true,
+  }
   include ipset
 }
