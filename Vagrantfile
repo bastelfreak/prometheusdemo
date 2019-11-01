@@ -38,6 +38,7 @@ Vagrant.configure("2") do |config|
       yum install --assumeyes https://yum.puppetlabs.com/puppet5/puppet5-release-el-7.noarch.rpm
       yum install --assumeyes puppet
       source /etc/profile.d/puppet-agent.sh
+      puppet agent -t --environment production --server prometheus
     SHELL
   end
   config.vm.define "archclient" do |arch|
