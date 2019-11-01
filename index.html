@@ -636,7 +636,7 @@ background-size: cover
 .right-column[
 ![imagefoo](prometheus01.svg)
 
-With the [puppet/prometheus](https://github.com/voxpupuli/puppet-prometheus#puppet-prometheus) module:
+With the [puppet/prometheus](https://forge.puppet.com/puppet/prometheus#puppet-prometheus) module:
 ```puppet
 include prometheus::node_exporter
 ```
@@ -680,6 +680,7 @@ background-size: cover
 ## Starting Point
 ## Exploration
 ## Integration
+### Authentication
 ]
 
 .right-column[
@@ -688,17 +689,149 @@ background-size: cover
 * Deploy nginx infront of node_exporter
 
 * Require a valid client certificate from prometheus database
+
+* [Vox Pupuli](https://voxpupuli.org) provides [puppet/nginx](https://forge.puppet.com/puppet/nginx#nginx-module-for-puppet) \o/
 ]
+
+.footnote[[@bastelsblog](https://twitter.com/bastelsblog) for [@voxpupuliorg](https://twitter.com/voxpupuliorg)]
 
 ???
 
+* Show the code
+* examples/node_exporter_profile.pp
+
 ---
 
+background-image: url(blue-skies.jpg)
+background-size: cover
 
+.left-column[
+## Starting Point
+## Exploration
+## Integration
+### Authentication
+### Firewalling
+]
 
+.right-column[
 
+* Only Prometheus database should be able to access exporters
 
+]
 
+.footnote[[@bastelsblog](https://twitter.com/bastelsblog) for [@voxpupuliorg](https://twitter.com/voxpupuliorg)]
+
+???
+
+* Obvious.
+
+---
+
+background-image: url(blue-skies.jpg)
+background-size: cover
+count: false
+
+.left-column[
+## Starting Point
+## Exploration
+## Integration
+### Authentication
+### Firewalling
+]
+
+.right-column[
+
+* Only Prometheus database should be able to access exporters
+
+* Firewalling should be automated
+
+]
+
+.footnote[[@bastelsblog](https://twitter.com/bastelsblog) for [@voxpupuliorg](https://twitter.com/voxpupuliorg)]
+
+???
+
+* manual work costs time
+* manual work doesn't make any fun
+* manual work leads to errors
+
+---
+
+background-image: url(blue-skies.jpg)
+background-size: cover
+count: false
+
+.left-column[
+## Starting Point
+## Exploration
+## Integration
+### Authentication
+### Firewalling
+]
+
+.right-column[
+
+* Only Prometheus database should be able to access exporters
+
+* Firewalling should be automated
+
+* IP addresses might change often
+]
+
+.footnote[[@bastelsblog](https://twitter.com/bastelsblog) for [@voxpupuliorg](https://twitter.com/voxpupuliorg)]
+
+???
+
+* Especially in a cloud environment, you don't have permanent ip addresses
+* boxes are often reprovisioned
+* or you add more boxes
+
+---
+
+background-image: url(blue-skies.jpg)
+background-size: cover
+
+.left-column[
+## Starting Point
+## Exploration
+## Integration
+### Authentication
+### Firewalling
+]
+
+.right-column[
+```puppet
+class profiles::prometheus {
+  @@ferm::rule{"prometheus2$trusted['certname']":
+    ensure => 'present',
+    chain  => 'INPUT',
+    saddr  => facts['networking']['ip6'],
+    dport  => 9100,
+    proto  => 'tcp',
+    policy => 'ACCEPT',
+    tag    => 'prometheus2node_exporter',
+  }
+}
+
+class profiles::node_exporter {
+  Ferm::Rule <<| title == 'prometheus2node_exporter' |>>
+}
+```
+
+* Exported resources to the rescue
+* [Vox Pupuli](https://voxpupuli.org) provides [puppet/ferm](https://forge.puppet.com/puppet/ferm#puppet-ferm)
+
+]
+
+.footnote[[@bastelsblog](https://twitter.com/bastelsblog) for [@voxpupuliorg](https://twitter.com/voxpupuliorg)]
+
+???
+
+* Especially in a cloud environment, you don't have permanent ip addresses
+* boxes are often reprovisioned
+* or you add more boxes
+
+---
 
 
 
