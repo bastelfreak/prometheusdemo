@@ -1,6 +1,6 @@
 class profiles::node_exporter {
 
-  ensure_packages(['unzip', 'curl'])
+  ensure_packages(['unzip'])
   case $facts['os']['family'] {
     'RedHat': {
       $nginx = 'nginx'

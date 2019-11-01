@@ -1,7 +1,4 @@
 class profiles::node_exporter {
-  # install unzip, a dependency of consul
-  ensure_packages(['unzip'])
-
   # install consul
   $ipfact = "networking.ip6"
   $ipv6 = $facts['networking']['ip6']
@@ -15,6 +12,11 @@ class profiles::node_exporter {
     'server'               => false,
     'disable_update_check' => true,
     'encrypt'              => 'my_magic_key',
+    'verify_outgoing'      => true,
+    'verify_incoming'      => true,
+    'ca_file'              => '/etc/puppetlabs/puppet/ssl/certs/ca.pem',
+    'cert_file'            => "/etc/puppetlabs/puppet/ssl/certs/${trusted['certname']}.pem",
+    'key_file'             => "/etc/consul.d/${trusted['certname']}.pem",
     'retry_join'           => map(sort($consulnodeips)) |$ip| { "[${ip}]" },
     'enable_script_checks' => true,
   }
@@ -26,6 +28,16 @@ class profiles::node_exporter {
     config_hash     => $config_hash,
     enable_beta_ui  => false,
     require         => Package['unzip'],
+  }
+
+  $cert = "/etc/puppetlabs/puppet/ssl/private_keys/${trusted['certname']}.pem"
+  file { "/etc/consul.d/${trusted['certname']}.pem":
+    ensure => 'file',
+    owner  => 'consul',
+    group  => 'consul',
+    mode   => '0400',
+    source => $cert,
+    notify => Class[Consul::Reload_service],
   }
 
   # register node exporter in consul
