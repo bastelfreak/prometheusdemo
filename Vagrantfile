@@ -18,6 +18,7 @@ Vagrant.configure("2") do |config|
       source /etc/profile.d/puppet-agent.sh
       puppet module install puppet-r10k --environment production
       puppet cert generate puppet.local --dns_alt_names=puppet.local,puppet,puppetdb,puppetdb.local,prometheus,prometheus.local
+      puppet resource service puppetserver enable=true ensure=running
       puppet apply -e 'include r10k'
       sed -i 's#remote:.*#remote: https://github.com/bastelfreak/osmc2019.git#' /etc/puppetlabs/r10k/r10k.yaml
       yum install --assumeyes git
