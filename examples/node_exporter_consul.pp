@@ -14,7 +14,6 @@ class profiles::node_exporter {
     'node_name'            => $trusted['certname'],
     'server'               => false,
     'disable_update_check' => true,
-    'encrypt'              => 'my_magic_key',
     'retry_join'           => map(sort($consulnodeips)) |$ip| { "[${ip}]" },
     'enable_script_checks' => true,
   }
