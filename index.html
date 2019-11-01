@@ -384,6 +384,7 @@ background-size: cover
 ]
 
 .right-column[
+Prometheus Exporters:
 
 * Reads many metrics from your box, expose them via HTTP
 
@@ -408,6 +409,7 @@ count: false
 ]
 
 .right-column[
+Prometheus Exporters:
 
 * Reads many metrics from your box, expose them via HTTP
 
@@ -434,6 +436,7 @@ count: false
 ]
 
 .right-column[
+Prometheus Exporters:
 
 * Reads many metrics from your box, expose them via HTTP
 
@@ -462,6 +465,7 @@ count: false
 ]
 
 .right-column[
+Prometheus Exporters:
 
 * Reads many metrics from your box, expose them via HTTP
 
@@ -496,6 +500,7 @@ background-size: cover
 ]
 
 .right-column[
+Prometheus Exporters:
 
 ```sh
 # HELP Total number of scrapes by HTTP status code.
@@ -538,6 +543,9 @@ background-size: cover
 
 ???
 
+* Most frameworks have builtin features to expose metrics
+* Many of them already in a prometheus style
+
 ---
 
 background-image: url(blue-skies.jpg)
@@ -560,6 +568,12 @@ count: false
 .footnote[[@bastelsblog](https://twitter.com/bastelsblog) for [@voxpupuliorg](https://twitter.com/voxpupuliorg)]
 
 ???
+
+* metadata, for example from cloud-init
+* from your inventory system
+* data collected by systemd timers/cronjobs
+
+Let them write into a txt file that node_exporter can read
 
 ---
 
@@ -586,6 +600,7 @@ count: false
 
 ???
 
+* kubernetes for example
 
 ---
 
@@ -613,6 +628,7 @@ count: false
 
 ???
 
+* most of them are single go binaries
 
 ---
 
@@ -687,7 +703,7 @@ background-size: cover
 
 * Prometheus database needs to know the targets
 
-* Register each exporter in Consul as service
+* Register each exporter in Consul as a service
 
 * Feed services into Prometheus
 
@@ -709,8 +725,6 @@ background-size: cover
 ## Exploration
 ## Integration
 ### Discovery
-### Authentication
-### Firewalling
 ]
 
 .right-column[
@@ -721,6 +735,7 @@ Take a look at [./examples/node_exporter_consul.pp](https://github.com/bastelfre
 .footnote[[@bastelsblog](https://twitter.com/bastelsblog) for [@voxpupuliorg](https://twitter.com/voxpupuliorg)]
 
 ???
+
 ---
 
 background-image: url(blue-skies.jpg)
@@ -737,7 +752,7 @@ background-size: cover
 .right-column[
 * Puppet Agent/Server use TLS client certificates
 
-* Deploy nginx infront of node_exporter
+* Deploy nginx in front of node_exporter
 
 * Require a valid client certificate from prometheus database
 
@@ -748,8 +763,28 @@ background-size: cover
 
 ???
 
-* Show the code
-* examples/node_exporter_profile.pp
+---
+
+background-image: url(blue-skies.jpg)
+background-size: cover
+
+.left-column[
+## Starting Point
+## Exploration
+## Integration
+### Discovery
+### Authentication
+]
+
+.right-column[
+
+Take a look at [./examples/node_exporter_profile.pp](https://github.com/bastelfreak/osmc2019/blob/production/examples/node_exporter_profile.pp)
+
+]
+
+.footnote[[@bastelsblog](https://twitter.com/bastelsblog) for [@voxpupuliorg](https://twitter.com/voxpupuliorg)]
+
+???
 
 ---
 
@@ -899,14 +934,23 @@ background-size: cover
 
 .right-column[
 
+Consul:
+
+* Consul creates a meshed network
+
 * iptables doesn't scale with thousands of entries
 
 * filtering pakets and changing rules will be delayed
+
 ]
 
 .footnote[[@bastelsblog](https://twitter.com/bastelsblog) for [@voxpupuliorg](https://twitter.com/voxpupuliorg)]
 
 ???
+
+* Every consul node needs to talk to every other consul instance
+
+* Consul is currently plaintext
 
 ---
 
@@ -923,6 +967,10 @@ background-size: cover
 ]
 
 .right-column[
+
+ipsets and separate chains to the rescue!
+
+* handle consul traffic in a separate iptables chain
 
 * ip sets are a hashmap of CIDR ranges
 
