@@ -14,6 +14,31 @@ class roles::server {
     gpgcheck   => 1,
     gpgkey     => $epel_gpgkey,
   }
+
+  # the whole point of this is that we need a puppetserver that automatically sign certificate requests
+  class{'puppet':
+    # Don't configure the agent
+    agent                           => false,
+    # configure the server
+    server                          => true,
+    # don't integrate with foreman
+    server_foreman                  => false,
+    # 3 settings: dev environment, just sign every request
+    autosign                        => true,
+    server_ca_allow_sans            => true,
+    server_ca_allow_auth_extensions => true,
+    # Setup Puppet 5, not 6
+    server_puppetserver_version     => '5.3.10',
+    # dont create /etc/puppetlabs/code/environments/common
+    server_common_modules_path      => '',
+    # don't leak private data to Puppet Inc.
+    server_check_for_updates        => false,
+    # store puppet reports on disk, dont send them to foreman
+    server_reports                  => 'store',
+    require                         => Yumrepo['epel'],
+  }
+
+
   ensure_packages(['unzip'])
   class{'consul':
     version        => '1.6.1',
@@ -43,6 +68,7 @@ class roles::server {
   include nginx
   class{'ferm':
     manage_configfile => true,
+    input_policy      => 'ACCEPT',
   }
   include ipset
 }
