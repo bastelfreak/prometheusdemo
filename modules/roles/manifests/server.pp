@@ -219,6 +219,19 @@ class roles::server {
   class{'nginx':
     nginx_version => '1.16.1',
   }
+  consul::service { 'node_exporter':
+    checks => [
+      {
+        name     => 'node_exporter health check',
+        http     => 'http://127.0.0.1:9100',
+        interval => '10s',
+        timeout  => '1s'
+      }
+    ],
+    port   => 9100,
+    address => $trusted['certname'],
+    tags    => ['node_exporter'],
+  }
 
   class{'ferm':
     manage_configfile => true,
