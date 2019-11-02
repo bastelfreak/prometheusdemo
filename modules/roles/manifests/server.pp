@@ -159,7 +159,11 @@ class roles::server {
     version       => '0.18.1',
   }
   # that selboolean allows nginx to talk to tcp port 9100
-  selboolean { 'httpd_enable_ftp_server':
+  selboolean { 'httpd_can_network_connect':
+    value      => 'on',
+    persistent => true,
+  }
+  selboolean { 'httpd_can_network_relay':
     value      => 'on',
     persistent => true,
   }
