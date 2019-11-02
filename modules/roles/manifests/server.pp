@@ -100,7 +100,7 @@ class roles::server {
           ]
       },
       {
-        'job_name'          => 'node_exporter',
+        'job_name'          => 'node-exporter',
         'scrape_interval'   => '10s',
         'scrape_timeout'    => '10s',
         'scheme'            => 'https',
@@ -112,7 +112,7 @@ class roles::server {
         'consul_sd_configs' => [
           {
             'server'   => 'localhost:8500',
-            'services' => ['node_exporter'],
+            'services' => ['node-exporter'],
             'scheme'   => 'http'
           }
         ]
