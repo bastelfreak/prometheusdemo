@@ -3,6 +3,7 @@ mod 'puppet-prometheus'
 mod 'puppet-nginx'
 mod 'puppet-ipset'
 mod 'KyleAnderson-consul'
+mod 'theforeman-puppet'
 # dependencies
 mod 'puppetlabs-stdlib'
 mod 'puppet-archive'
