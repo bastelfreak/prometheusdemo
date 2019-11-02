@@ -37,6 +37,8 @@ class roles::server {
     server_reports                  => 'store',
     # Don't configure an ENC script
     server_external_nodes           => '',
+    # use a modern parser
+    server_strict_variables         => true,
     require                         => Yumrepo['epel'],
   }
 
