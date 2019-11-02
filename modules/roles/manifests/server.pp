@@ -262,5 +262,4 @@ class roles::server {
     },
     require    => Ipset::Set['rfc1918'],
   }
-
 }
