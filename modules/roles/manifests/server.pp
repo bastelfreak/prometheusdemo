@@ -74,7 +74,7 @@ class roles::server {
     group          => 'consul',
     mode           => '0400',
     source         => "/etc/puppetlabs/puppet/ssl/private_keys/${trusted['certname']}.pem",
-    notify         => Class[Consul::Reload_service],
+    notify         => Class['consul::reload_service'],
   }
 
   class{'prometheus::server':
