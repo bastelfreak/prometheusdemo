@@ -57,11 +57,26 @@ class roles::server {
       'node_name'            => $facts['fqdn'],
       'server'               => true,
       'disable_update_check' => true,
+      'encrypt'              => 'biFfI6Ru5Opbv3PpbgIQsm3IyFt3vhOsVZKHYndtd/g=',
+      'verify_outgoing'      => true,
+      'verify_incoming'      => true,
+      'ca_file'              => '/etc/puppetlabs/puppet/ssl/certs/ca.pem',
+      'cert_file'            => "/etc/puppetlabs/puppet/ssl/certs/${facts['certname']}.pem",
+      'key_file'             => "/etc/consul.d/${trusted['certname']}.pem",
       'enable_script_checks' => true,
       'ui'                   => true,
     },
     require        => Package['unzip'],
   }
+  file { "/etc/consul.d/${trusted['certname']}.pem":
+    ensure         => 'file',
+    owner          => 'consul',
+    group          => 'consul',
+    mode           => '0400',
+    source         => "/etc/puppetlabs/puppet/ssl/private_keys/${trusted['certname']}.pem",
+    notify         => Class[Consul::Reload_service],
+  }
+
   class{'prometheus::server':
     version => '2.13.1',
   }

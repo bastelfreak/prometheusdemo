@@ -16,6 +16,7 @@ Vagrant.configure("2") do |config|
       yum install --assumeyes https://yum.puppetlabs.com/puppet5/puppet5-release-el-7.noarch.rpm
       yum install --assumeyes puppet puppetserver
       source /etc/profile.d/puppet-agent.sh
+      echo 'export PATH="/usr/local/bin:/usr/local/sbin:${PATH}"' > /etc/profile.d/path.sh
       puppet module install puppet-r10k --environment production
       puppet cert generate puppet.local --dns_alt_names=puppet.local,puppet,puppetdb,puppetdb.local,prometheus,prometheus.local
       puppet resource service puppetserver enable=true ensure=running
