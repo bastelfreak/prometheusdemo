@@ -154,8 +154,61 @@ class roles::server {
     extra_options => '--web.listen-address 127.0.0.1:9100',
     version       => '0.18.1',
   }
-
-  include nginx
+  nginx::resource::server {'node_exporter':
+    listen_ip         => $facts['networking']['ip'],
+    ipv6_enable       => false,
+    server_name       => [$trusted['certname']],
+    listen_port       => 9100,
+    ssl_port          => 9100,
+    proxy             => 'http://localhost:9100',
+    ssl               => true,
+    ssl_redirect      => false,
+    ssl_key           => "/etc/nginx/node_exporter_key_${trusted['certname']}.pem",
+    ssl_cert          => "/etc/nginx/node_exporter_cert_${trusted['certname']}.pem",
+    ssl_crl           => '/etc/nginx/node_exporter_puppet_crl.pem',
+    ssl_client_cert   => '/etc/nginx/node_exporter_puppet_ca.pem',
+    ssl_protocols     => $ssl_protocols,
+    ssl_verify_client => 'on',
+  }
+  file { "/etc/nginx/node_exporter_key_${trusted['certname']}.pem":
+    ensure  => 'file',
+    owner   => 'nginx',
+    group   => 'nginx',
+    mode    => '0400',
+    source  => "/etc/puppetlabs/puppet/ssl/private_keys/${trusted['certname']}.pem",
+    notify => Class['nginx::service'],
+    require => Class['nginx::config'],
+  }
+  file { "/etc/nginx/node_exporter_cert_${trusted['certname']}.pem":
+    ensure => 'file',
+    owner  => 'nginx',
+    group  => 'nginx',
+    mode   => '0400',
+    source => "/etc/puppetlabs/puppet/ssl/certs/${trusted['certname']}.pem",
+    notify => Class['nginx::service'],
+    require => Class['nginx::config'],
+  }
+  file { '/etc/nginx/node_exporter_puppet_crl.pem':
+    ensure => 'file',
+    owner  => 'nginx',
+    group  => 'nginx',
+    mode   => '0400',
+    source => '/etc/puppetlabs/puppet/ssl/crl.pem',
+    notify => Class['nginx::service'],
+    require => Class['nginx::config'],
+  }
+  file { '/etc/nginx/node_exporter_puppet_ca.pem':
+    ensure  => 'file',
+    owner   => 'nginx',
+    group   => 'nginx',
+    mode    => '0400',
+    source  => '/etc/puppetlabs/puppet/ssl/certs/ca.pem',
+    notify  => Class['nginx::service'],
+    require => Class['nginx::config'],
+  }
+  class{'nginx':
+    nginx_version => '1.16.1',
+  }
 
   class{'ferm':
     manage_configfile => true,
