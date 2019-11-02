@@ -25,6 +25,7 @@ Vagrant.configure("2") do |config|
       yum install --assumeyes git
       r10k deploy environment production --puppetfile --verbose --generate-types
       puppet agent -t --server prometheus
+      puppet agent -t --server prometheus
     SHELL
   end
   config.vm.define "centosclient" do |centos|
