@@ -162,14 +162,17 @@ class roles::server {
   selboolean { 'httpd_can_network_connect':
     value      => 'on',
     persistent => true,
+    before     => Nginx::Resource::Server['node_exporter'],
   }
   selboolean { 'httpd_can_network_relay':
     value      => 'on',
     persistent => true,
+    before     => Nginx::Resource::Server['node_exporter'],
   }
   selboolean{'httpd_setrlimit':
     value      => 'on',
     persistent => true,
+    before     => Nginx::Resource::Server['node_exporter'],
   }
   nginx::resource::server {'node_exporter':
     listen_ip         => $facts['networking']['ip'],
@@ -186,7 +189,6 @@ class roles::server {
     ssl_client_cert   => '/etc/nginx/node_exporter_puppet_ca.pem',
     ssl_protocols     => 'TLSv1.2',
     ssl_verify_client => 'on',
-    require           => [Selboolean['httpd_enable_ftp_server'],Selboolean['httpd_setrlimit']],
   }
   file { "/etc/nginx/node_exporter_key_${trusted['certname']}.pem":
     ensure  => 'file',
