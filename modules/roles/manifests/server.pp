@@ -124,6 +124,9 @@ class roles::server {
     group   => 'prometheus',
     mode    => '0400',
     source  => "/etc/puppetlabs/puppet/ssl/private_keys/${trusted['certname']}.pem",
+    before  => Class['prometheus::config'],
+    require => Class['prometheus::install'],
+    notify  => Class['prometheus::run_service'],
   }
   file { "/etc/prometheus/cert_${trusted['certname']}.pem":
     ensure => 'file',
@@ -131,13 +134,19 @@ class roles::server {
     group  => 'prometheus',
     mode   => '0400',
     source => "/etc/puppetlabs/puppet/ssl/certs/${trusted['certname']}.pem",
+    before  => Class['prometheus::config'],
+    require => Class['prometheus::install'],
+    notify  => Class['prometheus::run_service'],
   }
   file { '/etc/prometheus/ca.pem':
-    ensure => 'file',
-    owner  => 'prometheus',
-    group  => 'prometheus',
-    mode   => '0400',
-    source => '/etc/puppetlabs/puppet/ssl/certs/ca.pem',
+    ensure  => 'file',
+    owner   => 'prometheus',
+    group   => 'prometheus',
+    mode    => '0400',
+    source  => '/etc/puppetlabs/puppet/ssl/certs/ca.pem',
+    before  => Class['prometheus::config'],
+    require => Class['prometheus::install'],
+    notify  => Class['prometheus::run_service'],
   }
 
   class{'prometheus::node_exporter':
