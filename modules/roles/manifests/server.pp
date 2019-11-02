@@ -62,7 +62,7 @@ class roles::server {
       'verify_outgoing'      => true,
       'verify_incoming'      => true,
       'ca_file'              => '/etc/puppetlabs/puppet/ssl/certs/ca.pem',
-      'cert_file'            => "/etc/puppetlabs/puppet/ssl/certs/${facts['certname']}.pem",
+      'cert_file'            => "/etc/puppetlabs/puppet/ssl/certs/${trusted['certname']}.pem",
       'key_file'             => "/etc/consul.d/${trusted['certname']}.pem",
       'enable_script_checks' => true,
       'ui'                   => true,
