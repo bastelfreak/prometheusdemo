@@ -35,6 +35,8 @@ class roles::server {
     server_check_for_updates        => false,
     # store puppet reports on disk, dont send them to foreman
     server_reports                  => 'store',
+    # Don't configure an ENC script
+    server_external_nodes           => '',
     require                         => Yumrepo['epel'],
   }
 
