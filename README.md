@@ -2,12 +2,12 @@
 
 ## Table of contents
 
-* [What?](#what)
+* [What is this about](#what-is-this-about)
 * [Architecture](#architecture)
 * [Notes](#notes)
 * [Vagrant cheat sheet](#vagrant-cheat-sheet)
 
-## What?
+## What is this about
 
 This is a demo environment to show the automatic rollout of Prometheus
 exporters with Puppet. A Vagrantfile is available that allows you to test and
@@ -28,6 +28,27 @@ The second machine is a CentOS 7 client with:
 ## Architecture
 
 ![image](prometheus02.svg)
+
+On the server, we setup a Consul master for service registration and service
+discovery. This allows us to register each node\_exporter as a service.
+Prometheus can connect to consul, get a list of services and scrape them.
+
+To make the whole setup more secure, we wil do two things:
+
+### Authentication and Authorisation
+
+It's important that only trusted sources are allowed to access the exporters.
+To achive this, We bind them to localhost and install an nginx in front of
+them. All the exporters don't support any type of authentication or
+authorisation. But nginx is able to not only handle generic TLS traffic,
+it can also validate TLS client certificates. Since we already have Puppet
+on each box, we can reuse the Puppet client certificates for this. Our
+Prometheus daemon will connect to each exporter with a client certificate.
+
+### Firewalling
+
+Since firewalling needs to be scaleable, and consul demands a meshed network
+between each agent. We will deploy custom iptables chains and ipsets.
 
 ## Notes
 

@@ -2,6 +2,8 @@ Vagrant.configure("2") do |config|
   config.hostmanager.enabled = true                           # Update /etc/hosts with entries from other VMs
   config.hostmanager.manage_host = false                      # Don't update /etc/hosts on the Hypervisor
   config.hostmanager.include_offline = true                   # Also document offline VMs
+  config.hostmanager.enabled = false                          # Disable the default hostmanager behavior
+  config.vm.provision :hostmanager                            # update /etc/hosts during provisioning
   config.vm.define "server" do |server|
     server.vm.box = "centos/7"                                # base image we use
     server.vm.hostname = "prometheus"                         # hostname that's configured within the VM
@@ -14,6 +16,7 @@ Vagrant.configure("2") do |config|
     end
 
     server.vm.provision "shell", inline: <<-SHELL
+      sed -i 's/127.0.0.1.*prometheus.*prometheus//' /etc/hosts
       yum install --assumeyes https://yum.puppetlabs.com/puppet5/puppet5-release-el-7.noarch.rpm
       yum install --assumeyes puppet puppetserver
       source /etc/profile.d/puppet-agent.sh
@@ -39,6 +42,7 @@ Vagrant.configure("2") do |config|
       v.cpus = 2                                              # Cores
     end
     centos.vm.provision "shell", inline: <<-SHELL
+      sed -i 's/127.0.0.1.*centosclient.*centosclient//' /etc/hosts
       yum install --assumeyes https://yum.puppetlabs.com/puppet5/puppet5-release-el-7.noarch.rpm
       yum install --assumeyes puppet
       source /etc/profile.d/puppet-agent.sh
