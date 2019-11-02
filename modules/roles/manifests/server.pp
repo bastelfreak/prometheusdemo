@@ -154,6 +154,11 @@ class roles::server {
     extra_options => '--web.listen-address 127.0.0.1:9100',
     version       => '0.18.1',
   }
+  # that selboolean allows nginx to talk to tcp port 9100
+  selboolean { 'httpd_enable_ftp_server':
+    value      => 'on',
+    persistent => true,
+  }
   nginx::resource::server {'node_exporter':
     listen_ip         => $facts['networking']['ip'],
     ipv6_enable       => false,
@@ -169,6 +174,7 @@ class roles::server {
     ssl_client_cert   => '/etc/nginx/node_exporter_puppet_ca.pem',
     ssl_protocols     => 'TLSv1.2',
     ssl_verify_client => 'on',
+    require           => Selboolean['httpd_enable_ftp_server'],
   }
   file { "/etc/nginx/node_exporter_key_${trusted['certname']}.pem":
     ensure  => 'file',
