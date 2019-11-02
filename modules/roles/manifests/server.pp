@@ -65,10 +65,36 @@ class roles::server {
     extra_options => '--web.listen-address 127.0.0.1:9100',
     version       => '0.18.1',
   }
+
   include nginx
+
   class{'ferm':
     manage_configfile => true,
     input_policy      => 'ACCEPT',
   }
+  ferm::chain { 'CONSUL':
+    disable_conntrack   => true,
+    log_dropped_packets => false,
+  }
+  ferm::rule { 'jump_consul_chain':
+    chain   => 'INPUT',
+    action  => 'CONSUL',
+    proto   => ['udp', 'tcp'],
+    dport   => '(8301 8302)',
+    require => Ferm::Chain['CONSUL'],
+  }
+
   include ipset
+  ipset::set{'rfc1918':
+    ensure  => 'present',
+    set     => ['10.0.0.0/8', '172.16.0.0/12', '192.168.0.0/16'],
+    type    => 'hash:net',
+  }
+  ferm::ipset{'CONSUL':
+    sets       => {
+      'rfc1918' => 'ACCEPT',
+    },
+    require    => Ipset::Set['rfc1918'],
+  }
+
 }
