@@ -2,8 +2,32 @@
 
 ## Table of contents
 
+* [What?](#what)
+* [Architecture](#architecture)
 * [Notes](#notes)
 * [Vagrant cheat sheet](#vagrant-cheat-sheet)
+
+## What?
+
+This is a demo environment to show the automatic rollout of Prometheus
+exporters with Puppet. A Vagrantfile is available that allows you to test and
+discover all of this locally.
+
+We will bootstrap a CentOS 7 server with:
+
+* Puppetserver
+* Consul
+* node\_exporter
+* Nginx as reverse TLS proxy
+
+The second machine is a CentOS 7 client with:
+
+* Consul
+* node\_exporter
+
+## Architecture
+
+![image](prometheus02.svg)
 
 ## Notes
 
