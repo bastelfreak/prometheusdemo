@@ -23,6 +23,7 @@ Vagrant.configure("2") do |config|
       sed -i 's#remote:.*#remote: https://github.com/bastelfreak/osmc2019.git#' /etc/puppetlabs/r10k/r10k.yaml
       yum install --assumeyes git
       r10k deploy environment production --puppetfile --verbose --generate-types
+      puppet agent -t --server prometheus
     SHELL
   end
   config.vm.define "centosclient" do |centos|
