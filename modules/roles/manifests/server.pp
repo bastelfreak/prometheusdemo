@@ -15,6 +15,8 @@ class roles::server {
     gpgkey     => $epel_gpgkey,
   }
 
+  ensure_packages(['unzip', 'vim-enhanced', 'htop'], {'require' => Yumrepo['epel']})
+
   # the whole point of this is that we need a puppetserver that automatically sign certificate requests
   class{'puppet':
     # Don't configure the agent
@@ -42,8 +44,6 @@ class roles::server {
     require                         => Yumrepo['epel'],
   }
 
-
-  ensure_packages(['unzip'])
   class{'consul':
     version        => '1.6.1',
     config_dir     => '/etc/consul.d',

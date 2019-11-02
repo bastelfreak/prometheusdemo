@@ -15,7 +15,8 @@ class roles::client {
     gpgkey     => $epel_gpgkey,
   }
 
-  ensure_packages(['unzip'])
+  ensure_packages(['unzip', 'vim-enhanced', 'htop'], {'require' => Yumrepo['epel']})
+
   class{'consul':
     version        => '1.6.1',
     config_dir     => '/etc/consul.d',
