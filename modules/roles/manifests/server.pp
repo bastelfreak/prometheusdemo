@@ -219,7 +219,7 @@ class roles::server {
   class{'nginx':
     nginx_version => '1.16.1',
   }
-  consul::service { 'node_exporter':
+  consul::service { 'node-exporter':
     checks => [
       {
         name     => 'node_exporter health check',
@@ -230,7 +230,7 @@ class roles::server {
     ],
     port   => 9100,
     address => $trusted['certname'],
-    tags    => ['node_exporter'],
+    tags    => ['node-exporter'],
   }
 
   class{'ferm':
