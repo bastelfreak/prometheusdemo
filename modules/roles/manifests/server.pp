@@ -46,6 +46,7 @@ class roles::server {
   ensure_packages(['unzip'])
   class{'consul':
     version        => '1.6.1',
+    config_dir     => '/etc/consul.d',
     pretty_config  => true,
     enable_beta_ui => true,
     config_hash    => {
