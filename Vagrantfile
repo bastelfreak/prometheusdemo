@@ -6,6 +6,7 @@ Vagrant.configure("2") do |config|
     server.vm.box = "centos/7"                                # base image we use
     server.vm.hostname = "prometheus"                         # hostname that's configured within the VM
     server.vm.network "private_network", ip: "192.168.33.10"
+    config.vm.network "forwarded_port", guest: 9090, host: 9090
     server.vm.provider "virtualbox" do |v|
       v.name = "server"                                       # Name that's displayed within the VirtualBox UI
       v.memory = 3072                                         # Ram in MB
