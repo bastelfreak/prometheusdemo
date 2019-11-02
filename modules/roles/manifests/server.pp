@@ -167,7 +167,7 @@ class roles::server {
     ssl_cert          => "/etc/nginx/node_exporter_cert_${trusted['certname']}.pem",
     ssl_crl           => '/etc/nginx/node_exporter_puppet_crl.pem',
     ssl_client_cert   => '/etc/nginx/node_exporter_puppet_ca.pem',
-    ssl_protocols     => $ssl_protocols,
+    ssl_protocols     => 'TLSv1.2',
     ssl_verify_client => 'on',
   }
   file { "/etc/nginx/node_exporter_key_${trusted['certname']}.pem":
