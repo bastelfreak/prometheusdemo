@@ -41,6 +41,8 @@ Vagrant.configure("2") do |config|
       yum install --assumeyes https://yum.puppetlabs.com/puppet5/puppet5-release-el-7.noarch.rpm
       yum install --assumeyes puppet
       source /etc/profile.d/puppet-agent.sh
+      echo 'export PATH="/usr/local/bin:/usr/local/sbin:${PATH}"' > /etc/profile.d/path.sh
+      puppet agent -t --environment production --server prometheus
       puppet agent -t --environment production --server prometheus
     SHELL
   end
