@@ -80,6 +80,43 @@ class roles::server {
 
   class{'prometheus::server':
     version => '2.13.1',
+    extra_options  => '--web.enable-admin-api',
+    scrape_configs => [
+      {
+        'job_name' => 'prometheus',
+        'scrape_interval' => '10s',
+        'scrape_timeout' => '10s',
+        'static_configs' => [
+        {
+          'targets' => [
+            'localhost:9090'
+          ],
+          'labels' =>
+            {
+              'alias' => 'Prometheus'
+            }
+          }
+          ]
+      },
+      {
+        'job_name'          => 'node_exporter',
+        'scrape_interval'   => '10s',
+        'scrape_timeout'    => '10s',
+        'scheme'            => 'https',
+        'tls_config'        => {
+          'ca_file'   => '/etc/prometheus/ca.pem',
+          'cert_file' => "/etc/prometheus/cert_${trusted['certname']}.pem",
+          'key_file'  => "/etc/prometheus/key_${trusted['certname']}.pem"
+        },
+        'consul_sd_configs' => [
+          {
+            'server'   => 'localhost:8500',
+            'services' => ['node_exporter'],
+            'scheme'   => 'http'
+          }
+        ]
+      }
+    ],
   }
   class{'prometheus::node_exporter':
     extra_options => '--web.listen-address 127.0.0.1:9100',
