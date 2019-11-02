@@ -15,7 +15,7 @@ class roles::server {
     gpgkey     => $epel_gpgkey,
   }
 
-  ensure_packages(['unzip', 'vim-enhanced', 'htop'], {'require' => Yumrepo['epel']})
+  ensure_packages(['unzip', 'vim-enhanced', 'htop', 'bind-utils'], {'require' => Yumrepo['epel']})
 
   # the whole point of this is that we need a puppetserver that automatically sign certificate requests
   class{'puppet':
