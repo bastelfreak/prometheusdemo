@@ -39,7 +39,7 @@ class roles::client {
       'key_file'             => "/etc/consul.d/${trusted['certname']}.pem",
       'enable_script_checks' => true,
       'ui'                   => true,
-      'retry_join'           => 'prometheus',
+      'retry_join'           => ['prometheus'],
     },
   }
   file { "/etc/consul.d/${trusted['certname']}.pem":
