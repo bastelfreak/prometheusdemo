@@ -75,6 +75,11 @@ class roles::client {
     persistent => true,
     before     => Nginx::Resource::Server['node_exporter'],
   }
+  selboolean{'httpd_enable_ftp_server':
+    value      => 'on',
+    persistent => true,
+    before     => Nginx::Resource::Server['node_exporter'],
+  }
   nginx::resource::server {'node_exporter':
     listen_ip         => $facts['networking']['interfaces']['eth1']['ip'],
     ipv6_enable       => false,
