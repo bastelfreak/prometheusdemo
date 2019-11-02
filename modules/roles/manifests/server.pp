@@ -90,6 +90,7 @@ class roles::server {
 
   class{'ferm':
     manage_configfile => true,
+    manage_service    => true,
     input_policy      => 'ACCEPT',
   }
   ferm::chain { 'CONSUL':
