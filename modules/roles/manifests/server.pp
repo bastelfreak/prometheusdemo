@@ -151,7 +151,7 @@ class roles::server {
   }
 
   class{'prometheus::node_exporter':
-    collectors_enable => ['diskstats','filesystem','loadavg','meminfo','netdev','netstat','stat','time',
+    collectors_enable => ['diskstats','filesystem','meminfo','netdev','netstat','stat','time',
                           'interrupts','tcpstat', 'textfile', 'systemd', 'qdisc', 'processes',
                           'mountstats', 'logind', 'loadavg', 'entropy', 'edac',
                           'cpufreq', 'cpu', 'conntrack', 'arp'],
