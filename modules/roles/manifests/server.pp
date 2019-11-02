@@ -118,6 +118,28 @@ class roles::server {
       }
     ],
   }
+  file { "/etc/prometheus/key_${trusted['certname']}.pem":
+    ensure  => 'file',
+    owner   => 'prometheus',
+    group   => 'prometheus',
+    mode    => '0400',
+    source  => "/etc/puppetlabs/puppet/ssl/private_keys/${trusted['certname']}.pem",
+  }
+  file { "/etc/prometheus/cert_${trusted['certname']}.pem":
+    ensure => 'file',
+    owner  => 'prometheus',
+    group  => 'prometheus',
+    mode   => '0400',
+    source => "/etc/puppetlabs/puppet/ssl/certs/${trusted['certname']}.pem",
+  }
+  file { '/etc/prometheus/ca.pem':
+    ensure => 'file',
+    owner  => 'prometheus',
+    group  => 'prometheus',
+    mode   => '0400',
+    source => '/etc/puppetlabs/puppet/ssl/certs/ca.pem',
+  }
+
   class{'prometheus::node_exporter':
     extra_options => '--web.listen-address 127.0.0.1:9100',
     version       => '0.18.1',
