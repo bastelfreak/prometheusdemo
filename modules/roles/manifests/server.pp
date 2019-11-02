@@ -50,7 +50,7 @@ class roles::server {
     pretty_config  => true,
     enable_beta_ui => true,
     config_hash    => {
-      'bind_addr'            => $facts['networking']['ip'],
+      'bind_addr'            => $facts['networking']['interfaces']['eth1']['ip'],
       'bootstrap_expect'     => 1,
       'data_dir'             => '/opt/consul',
       'datacenter'           => 'NBG',
@@ -175,7 +175,7 @@ class roles::server {
     before     => Nginx::Resource::Server['node_exporter'],
   }
   nginx::resource::server {'node_exporter':
-    listen_ip         => $facts['networking']['ip'],
+    listen_ip         => $facts['networking']['interfaces']['eth1']['ip'],
     ipv6_enable       => false,
     server_name       => [$trusted['certname']],
     listen_port       => 9100,

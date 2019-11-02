@@ -24,8 +24,7 @@ class roles::client {
     enable_beta_ui => true,
     require        => Package['unzip'],
     config_hash    => {
-      'bind_addr'            => $facts['networking']['ip'],
-      'bootstrap_expect'     => 1,
+      'bind_addr'            => $facts['networking']['interfaces']['eth1']['ip'],
       'data_dir'             => '/opt/consul',
       'datacenter'           => 'NBG',
       'log_level'            => 'INFO',
@@ -70,7 +69,7 @@ class roles::client {
     persistent => true,
   }
   nginx::resource::server {'node_exporter':
-    listen_ip         => $facts['networking']['ip'],
+    listen_ip         => $facts['networking']['interfaces']['eth1']['ip'],
     ipv6_enable       => false,
     server_name       => [$trusted['certname']],
     listen_port       => 9100,
