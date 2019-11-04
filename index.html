@@ -955,7 +955,7 @@ class profiles::prometheus {
 }
 
 class profiles::node_exporter {
-  Ferm::Rule <<| title == 'prometheus2node_exporter' |>>
+  Ferm::Rule <<| tag == 'prometheus2node_exporter' |>>
 }
 ```
 
