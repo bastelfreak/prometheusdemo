@@ -158,26 +158,29 @@ class roles::server {
     extra_options => '--web.listen-address 127.0.0.1:9100',
     version       => '0.18.1',
   }
-  # that selboolean allows nginx to talk to tcp port 9100
-  selboolean { 'httpd_can_network_connect':
-    value      => 'on',
-    persistent => true,
-    before     => Nginx::Resource::Server['node_exporter'],
-  }
-  selboolean { 'httpd_can_network_relay':
-    value      => 'on',
-    persistent => true,
-    before     => Nginx::Resource::Server['node_exporter'],
-  }
-  selboolean{'httpd_setrlimit':
-    value      => 'on',
-    persistent => true,
-    before     => Nginx::Resource::Server['node_exporter'],
-  }
-  selboolean{'httpd_enable_ftp_server':
-    value      => 'on',
-    persistent => true,
-    before     => Nginx::Resource::Server['node_exporter'],
+  # only change selinux settings if selinux is present
+  if facts['os']['selinux']['enabled'] {
+    # those selbooleans allow nginx to talk to tcp port 9100
+    selboolean { 'httpd_can_network_connect':
+      value      => 'on',
+      persistent => true,
+      before     => Nginx::Resource::Server['node_exporter'],
+    }
+    selboolean { 'httpd_can_network_relay':
+      value      => 'on',
+      persistent => true,
+      before     => Nginx::Resource::Server['node_exporter'],
+    }
+    selboolean{'httpd_setrlimit':
+      value      => 'on',
+      persistent => true,
+      before     => Nginx::Resource::Server['node_exporter'],
+    }
+    selboolean{'httpd_enable_ftp_server':
+      value      => 'on',
+      persistent => true,
+      before     => Nginx::Resource::Server['node_exporter'],
+    }
   }
   nginx::resource::server {'node_exporter':
     listen_ip         => $facts['networking']['interfaces']['eth1']['ip'],
