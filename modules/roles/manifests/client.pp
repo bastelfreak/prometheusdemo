@@ -1,5 +1,5 @@
 class roles::client {
-  case facts['os']['family'] {
+  case $facts['os']['family'] {
     'Debian': {
       # epel is needed by foreman and ferm
       # foreman could provide epel for us, but we need to apply the basiscs class before :(
