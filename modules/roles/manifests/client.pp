@@ -1,21 +1,27 @@
 class roles::client {
-  # epel is needed by foreman and ferm
-  # foreman could provide epel for us, but we need to apply the basiscs class before :(
-  $osreleasemajor = $facts['os']['release']['major']
-  $epel_gpgkey = $osreleasemajor ? {
-    '7'     => 'https://fedoraproject.org/static/352C64E5.txt',
-    default => 'https://fedoraproject.org/static/0608B895.txt',
+  case facts['os']['family'] {
+    'Debian': {
+      # epel is needed by foreman and ferm
+      # foreman could provide epel for us, but we need to apply the basiscs class before :(
+      $osreleasemajor = $facts['os']['release']['major']
+      $epel_gpgkey = $osreleasemajor ? {
+        '7'     => 'https://fedoraproject.org/static/352C64E5.txt',
+        default => 'https://fedoraproject.org/static/0608B895.txt',
+      }
+      yumrepo { 'epel':
+        descr      => "Extra Packages for Enterprise Linux ${osreleasemajor} - \$basearch",
+        mirrorlist => "https://mirrors.fedoraproject.org/metalink?repo=epel-${osreleasemajor}&arch=\$basearch",
+        baseurl    => "http://download.fedoraproject.org/pub/epel/${osreleasemajor}/\$basearch",
+        enabled    => 1,
+        gpgcheck   => 1,
+        gpgkey     => $epel_gpgkey,
+      }
+      ensure_packages(['unzip', 'vim-enhanced', 'htop', 'bind-utils'], {'require' => Yumrepo['epel']})
+    }
+    'Archlinux': {
+      ensure_packages(['htop', 'unzip','vim'])
+    }
   }
-  yumrepo { 'epel':
-    descr      => "Extra Packages for Enterprise Linux ${osreleasemajor} - \$basearch",
-    mirrorlist => "https://mirrors.fedoraproject.org/metalink?repo=epel-${osreleasemajor}&arch=\$basearch",
-    baseurl    => "http://download.fedoraproject.org/pub/epel/${osreleasemajor}/\$basearch",
-    enabled    => 1,
-    gpgcheck   => 1,
-    gpgkey     => $epel_gpgkey,
-  }
-
-  ensure_packages(['unzip', 'vim-enhanced', 'htop', 'bind-utils'], {'require' => Yumrepo['epel']})
 
   class{'consul':
     version        => '1.6.1',
@@ -59,26 +65,30 @@ class roles::client {
     extra_options => '--web.listen-address 127.0.0.1:9100',
     version       => '0.18.1',
   }
-  # that selboolean allows nginx to talk to tcp port 9100
-  selboolean { 'httpd_can_network_connect':
-    value      => 'on',
-    persistent => true,
-    before     => Nginx::Resource::Server['node_exporter'],
-  }
-  selboolean { 'httpd_can_network_relay':
-    value      => 'on',
-    persistent => true,
-    before     => Nginx::Resource::Server['node_exporter'],
-  }
-  selboolean{'httpd_setrlimit':
-    value      => 'on',
-    persistent => true,
-    before     => Nginx::Resource::Server['node_exporter'],
-  }
-  selboolean{'httpd_enable_ftp_server':
-    value      => 'on',
-    persistent => true,
-    before     => Nginx::Resource::Server['node_exporter'],
+
+  # only change selinux settings if selinux is present
+  if facts['os']['selinux']['enabled'] {
+    # those selbooleans allow nginx to talk to tcp port 9100
+    selboolean { 'httpd_can_network_connect':
+      value      => 'on',
+      persistent => true,
+      before     => Nginx::Resource::Server['node_exporter'],
+    }
+    selboolean { 'httpd_can_network_relay':
+      value      => 'on',
+      persistent => true,
+      before     => Nginx::Resource::Server['node_exporter'],
+    }
+    selboolean{'httpd_setrlimit':
+      value      => 'on',
+      persistent => true,
+      before     => Nginx::Resource::Server['node_exporter'],
+    }
+    selboolean{'httpd_enable_ftp_server':
+      value      => 'on',
+      persistent => true,
+      before     => Nginx::Resource::Server['node_exporter'],
+    }
   }
   nginx::resource::server {'node_exporter':
     listen_ip         => $facts['networking']['interfaces']['eth1']['ip'],
