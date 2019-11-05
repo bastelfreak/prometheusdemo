@@ -1,6 +1,6 @@
 class roles::client {
   case $facts['os']['family'] {
-    'Debian': {
+    'RedHat': {
       # epel is needed by foreman and ferm
       # foreman could provide epel for us, but we need to apply the basiscs class before :(
       $osreleasemajor = $facts['os']['release']['major']
@@ -17,9 +17,11 @@ class roles::client {
         gpgkey     => $epel_gpgkey,
       }
       ensure_packages(['unzip', 'vim-enhanced', 'htop', 'bind-utils'], {'require' => Yumrepo['epel']})
+      $owner = 'nginx'
     }
     'Archlinux': {
       ensure_packages(['htop', 'unzip','vim'])
+      $owner = 'http'
     }
   }
 
@@ -108,8 +110,8 @@ class roles::client {
   }
   file { "/etc/nginx/node_exporter_key_${trusted['certname']}.pem":
     ensure  => 'file',
-    owner   => 'nginx',
-    group   => 'nginx',
+    owner   => $owner,
+    group   => $owner,
     mode    => '0400',
     source  => "/etc/puppetlabs/puppet/ssl/private_keys/${trusted['certname']}.pem",
     notify => Class['nginx::service'],
@@ -117,8 +119,8 @@ class roles::client {
   }
   file { "/etc/nginx/node_exporter_cert_${trusted['certname']}.pem":
     ensure => 'file',
-    owner  => 'nginx',
-    group  => 'nginx',
+    owner  => $owner,
+    group  => $owner,
     mode   => '0400',
     source => "/etc/puppetlabs/puppet/ssl/certs/${trusted['certname']}.pem",
     notify => Class['nginx::service'],
@@ -126,8 +128,8 @@ class roles::client {
   }
   file { '/etc/nginx/node_exporter_puppet_crl.pem':
     ensure => 'file',
-    owner  => 'nginx',
-    group  => 'nginx',
+    owner  => $owner,
+    group  => $owner,
     mode   => '0400',
     source => '/etc/puppetlabs/puppet/ssl/crl.pem',
     notify => Class['nginx::service'],
@@ -135,8 +137,8 @@ class roles::client {
   }
   file { '/etc/nginx/node_exporter_puppet_ca.pem':
     ensure  => 'file',
-    owner   => 'nginx',
-    group   => 'nginx',
+    owner   => $owner,
+    group   => $owner,
     mode    => '0400',
     source  => '/etc/puppetlabs/puppet/ssl/certs/ca.pem',
     notify  => Class['nginx::service'],
