@@ -67,7 +67,7 @@ class roles::client {
   }
 
   # only change selinux settings if selinux is present
-  if facts['os']['selinux']['enabled'] {
+  if $facts['os']['selinux']['enabled'] {
     # those selbooleans allow nginx to talk to tcp port 9100
     selboolean { 'httpd_can_network_connect':
       value      => 'on',
