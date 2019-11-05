@@ -1,8 +1,5 @@
 mod 'puppet-ferm'
-mod 'puppet-prometheus',
-  :git => 'https://github.com/voxpupuli/puppet-prometheus.git',
-  :branch => 'master'
-
+mod 'puppet-prometheus'
 mod 'puppet-nginx'
 mod 'puppet-ipset'
 mod 'KyleAnderson-consul'
