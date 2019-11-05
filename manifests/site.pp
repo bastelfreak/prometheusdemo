@@ -5,6 +5,6 @@ node centosclient {
   include roles::client
 }
 
-node archlinuxclient {
+node archclient {
   include roles::client
 }
