@@ -27,7 +27,7 @@ The second machine is a CentOS 7 client with:
 
 ## Architecture
 
-![image](prometheus02.svg)
+![image](prometheus03.svg)
 
 On the server, we setup a Consul master for service registration and service
 discovery. This allows us to register each node\_exporter as a service.
