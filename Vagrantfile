@@ -35,7 +35,7 @@ Vagrant.configure("2") do |config|
   end
   config.vm.define "centosclient" do |centos|
     centos.vm.box = "centos/7"                                # base image we use
-    centos.vm.hostname = "centosclient"                       # hostname that's configured within the VM
+    centos.vm.hostname = "centosclient.local"                 # hostname that's configured within the VM
     centos.vm.network "private_network", ip: "192.168.33.11"
     centos.vm.provider "virtualbox" do |v|
       v.name = "centosclient"                                 # Name that's displayed within the VirtualBox UI
@@ -55,7 +55,7 @@ Vagrant.configure("2") do |config|
   end
   config.vm.define "archclient" do |arch|
     arch.vm.box = "archlinux/archlinux"                        # base image we use
-    arch.vm.hostname = "archclient"                            # hostname that's configured within the VM
+    arch.vm.hostname = "archclient.local"                      # hostname that's configured within the VM
     arch.vm.network "private_network", ip: "192.168.33.12"
     arch.vm.provider "virtualbox" do |v|
       v.name = "archclient"                                   # Name that's displayed within the VirtualBox UI
