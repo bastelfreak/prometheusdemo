@@ -16,13 +16,14 @@ Vagrant.configure("2") do |config|
     end
 
     server.vm.provision "shell", inline: <<-SHELL
-      sed -i 's/127.0.0.1.*prometheus.*prometheus//' /etc/hosts
+      sed -i '/search.*/d' /etc/resolv.conf
+      sed -i '/127.0.0.1.*prometheus.*prometheus/d' /etc/hosts
       yum install --assumeyes https://yum.puppetlabs.com/puppet5/puppet5-release-el-7.noarch.rpm
       yum install --assumeyes puppet puppetserver
       source /etc/profile.d/puppet-agent.sh
       echo 'export PATH="/usr/local/bin:/usr/local/sbin:${PATH}"' > /etc/profile.d/path.sh
       puppet module install puppet-r10k --environment production
-      puppet cert generate puppet.local --dns_alt_names=puppet.local,puppet,puppetdb,puppetdb.local,prometheus,prometheus.local
+      puppet cert generate puppet.local --dns_alt_names=puppet.local,puppet,puppetdb,puppetdb.local,prometheus,prometheus.local --allow-dns-alt-names
       puppet resource service puppetserver enable=true ensure=running
       puppet apply -e 'include r10k'
       sed -i 's#remote:.*#remote: https://github.com/bastelfreak/osmc2019.git#' /etc/puppetlabs/r10k/r10k.yaml
@@ -42,7 +43,8 @@ Vagrant.configure("2") do |config|
       v.cpus = 2                                              # Cores
     end
     centos.vm.provision "shell", inline: <<-SHELL
-      sed -i 's/127.0.0.1.*centosclient.*centosclient//' /etc/hosts
+      sed -i '/search.*/d' /etc/resolv.conf
+      sed -i '/127.0.0.1.*centosclient.*centosclient/d' /etc/hosts
       yum install --assumeyes https://yum.puppetlabs.com/puppet5/puppet5-release-el-7.noarch.rpm
       yum install --assumeyes puppet
       source /etc/profile.d/puppet-agent.sh
@@ -60,7 +62,8 @@ Vagrant.configure("2") do |config|
       v.memory = 2028                                         # Ram in MB
       v.cpus = 2                                              # Cores
       arch.vm.provision "shell", inline: <<-SHELL
-        sed -i 's/127.0.0.1.*centosclient.*centosclient//' /etc/hosts
+        sed -i '/search.*/d' /etc/resolv.conf
+        sed -i '/127.0.0.1.*centosclient.*centosclient/g' /etc/hosts
         pacman -S --refresh --sysupgrade --noconfirm puppet --ignore linux,linux-headers,linux-api-headers,linux-firmware
         puppet agent -t --environment production --server prometheus
       SHELL
