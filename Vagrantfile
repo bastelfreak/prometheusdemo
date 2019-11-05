@@ -6,7 +6,7 @@ Vagrant.configure("2") do |config|
   config.vm.provision :hostmanager                            # update /etc/hosts during provisioning
   config.vm.define "server" do |server|
     server.vm.box = "centos/7"                                # base image we use
-    server.vm.hostname = "prometheus"                         # hostname that's configured within the VM
+    server.vm.hostname = "prometheus.local"                   # hostname that's configured within the VM
     server.vm.network "private_network", ip: "192.168.33.10"
     server.vm.network "forwarded_port", guest: 9090, host: 9090
     server.vm.provider "virtualbox" do |v|
@@ -23,14 +23,14 @@ Vagrant.configure("2") do |config|
       source /etc/profile.d/puppet-agent.sh
       echo 'export PATH="/usr/local/bin:/usr/local/sbin:${PATH}"' > /etc/profile.d/path.sh
       puppet module install puppet-r10k --environment production
-      puppet cert generate puppet.local --dns_alt_names=puppet.local,puppet,puppetdb,puppetdb.local,prometheus,prometheus.local --allow-dns-alt-names
+      puppet cert generate prometheus.local --dns_alt_names=puppet.local,puppet,prometheus,prometheus.local --allow-dns-alt-names
       puppet resource service puppetserver enable=true ensure=running
       puppet apply -e 'include r10k'
       sed -i 's#remote:.*#remote: https://github.com/bastelfreak/osmc2019.git#' /etc/puppetlabs/r10k/r10k.yaml
       yum install --assumeyes git
       r10k deploy environment production --puppetfile --verbose --generate-types
-      puppet agent -t --server prometheus
-      puppet agent -t --server prometheus
+      puppet agent -t --server prometheus.local
+      puppet agent -t --server prometheus.local
     SHELL
   end
   config.vm.define "centosclient" do |centos|
@@ -49,8 +49,8 @@ Vagrant.configure("2") do |config|
       yum install --assumeyes puppet
       source /etc/profile.d/puppet-agent.sh
       echo 'export PATH="/usr/local/bin:/usr/local/sbin:${PATH}"' > /etc/profile.d/path.sh
-      puppet agent -t --environment production --server prometheus
-      puppet agent -t --environment production --server prometheus
+      puppet agent -t --environment production --server prometheus.local
+      puppet agent -t --environment production --server prometheus.local
     SHELL
   end
   config.vm.define "archclient" do |arch|
@@ -65,7 +65,7 @@ Vagrant.configure("2") do |config|
         sed -i '/search.*/d' /etc/resolv.conf
         sed -i '/127.0.0.1.*centosclient.*centosclient/g' /etc/hosts
         pacman -S --refresh --sysupgrade --noconfirm puppet --ignore linux,linux-headers,linux-api-headers,linux-firmware
-        puppet agent -t --environment production --server prometheus
+        puppet agent -t --environment production --server prometheus.local
       SHELL
     end
   end
