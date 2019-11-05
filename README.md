@@ -100,6 +100,9 @@ nameserver fd00::e228:6dff:fe76:231c
 
 Remove the `search` option and provision the virtual machines again.
 
+Latest versions of this repository contain an sed statement during the
+provisioning that will remove the mentioned `search` line.
+
 ## Vagrant cheat sheet
 
 ### Status of a Vagrant environment
