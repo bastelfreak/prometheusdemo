@@ -25,7 +25,7 @@ class roles::client {
     }
     'Debian': {
       $owner = 'www-data'
-      ensure_pacakges(['htop', 'unzip', 'vim'])
+      ensure_packages(['htop', 'unzip', 'vim'])
     }
   }
 
