@@ -63,7 +63,7 @@ Vagrant.configure("2") do |config|
       v.cpus = 2                                              # Cores
       arch.vm.provision "shell", inline: <<-SHELL
         sed -i '/search.*/d' /etc/resolv.conf
-        sed -i '/127.0.0.1.*centosclient.*centosclient/g' /etc/hosts
+        sed -i '/127.0.0.1.*archclient.*archclient/g' /etc/hosts
         pacman -S --refresh --sysupgrade --noconfirm puppet --ignore linux,linux-headers,linux-api-headers,linux-firmware
         puppet agent -t --environment production --server prometheus.local
       SHELL
