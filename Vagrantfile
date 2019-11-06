@@ -69,6 +69,26 @@ Vagrant.configure("2") do |config|
       SHELL
     end
   end
+  config.vm.define "ubuntuclient" do |ubuntu|
+    ubuntu.vm.box = "ubuntu/bionic64"                            # base image we use
+    ubuntu.vm.hostname = "ubuntuclient.local"                    # hostname that's configured within the VM
+    ubuntu.vm.network "private_network", ip: "192.168.33.13"
+    ubuntu.vm.provider "virtualbox" do |v|
+      v.name = "ubuntuclient"                                 # Name that's displayed within the VirtualBox UI
+      v.memory = 2028                                         # Ram in MB
+      v.cpus = 2                                              # Cores
+      ubuntu.vm.provision "shell", inline: <<-SHELL
+        sed -i '/search.*/d' /etc/resolv.conf
+        sed -i '/127.0.0.1.*ubuntuclient.*ubuntuclient/g' /etc/hosts
+        wget https://apt.puppet.com/puppet5-release-bionic.deb
+        dpkg -i puppet5-release-bionic.deb
+        rm puppet5-release-bionic.deb
+        apt update
+        apt install -y puppet-agent
+        puppet agent -t --environment production --server prometheus.local
+      SHELL
+    end
+  end
 end
 
 # https://www.vagrantup.com/docs/virtualbox/configuration.html
