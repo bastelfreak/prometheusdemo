@@ -23,8 +23,17 @@ class roles::client {
       ensure_packages(['htop', 'unzip','vim'])
       $owner = 'http'
     }
+    'Debian': {
+      $owner = 'www-data'
+      ensure_pacakges(['htop', 'unzip', 'vim'])
+    }
   }
 
+  # workaround for predictable network names in Ubuntu 18.04
+  $bind_ip = fact('networking.interfaces.eth1.ip') ? {
+    undef => $facts['networking']['interfaces']['enp0s8']['ip'],
+    default => $facts['networking']['interfaces']['eth1']['ip'],
+  }
   class{'consul':
     version        => '1.6.1',
     config_dir     => '/etc/consul.d',
@@ -32,7 +41,7 @@ class roles::client {
     enable_beta_ui => true,
     require        => Package['unzip'],
     config_hash    => {
-      'bind_addr'            => $facts['networking']['interfaces']['eth1']['ip'],
+      'bind_addr'            => $bind_ip,
       'data_dir'             => '/opt/consul',
       'datacenter'           => 'NBG',
       'log_level'            => 'INFO',
@@ -93,7 +102,7 @@ class roles::client {
     }
   }
   nginx::resource::server {'node_exporter':
-    listen_ip         => $facts['networking']['interfaces']['eth1']['ip'],
+    listen_ip         => $bind_ip,
     ipv6_enable       => false,
     server_name       => [$trusted['certname']],
     listen_port       => 9100,
