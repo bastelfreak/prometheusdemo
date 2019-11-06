@@ -81,10 +81,13 @@ Vagrant.configure("2") do |config|
         sed -i '/search.*/d' /etc/resolv.conf
         sed -i '/127.0.0.1.*ubuntuclient.*ubuntuclient/g' /etc/hosts
         wget https://apt.puppet.com/puppet5-release-bionic.deb
+        export DEBIAN_FRONTEND=noninteractive
         dpkg -i puppet5-release-bionic.deb
         rm puppet5-release-bionic.deb
-        apt update
-        apt install -y puppet-agent
+        apt-get update
+        apt-get install -y puppet-agent
+        source /etc/profile.d/puppet-agent.sh
+        puppet agent -t --environment production --server prometheus.local
         puppet agent -t --environment production --server prometheus.local
       SHELL
     end
