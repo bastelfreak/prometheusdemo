@@ -66,6 +66,12 @@ class roles::server {
       'key_file'             => "/etc/consul.d/${trusted['certname']}.pem",
       'enable_script_checks' => true,
       'ui'                   => true,
+      'telemetry'            => {
+        'disable_hostname'          => true,
+        # Retention should be 2 times poll intervall or higher
+        # https://www.consul.io/docs/agent/options.html#telemetry-prometheus_retention_time
+        'prometheus_retention_time' => '20s',
+      },
     },
     require        => Package['unzip'],
   }
