@@ -95,10 +95,12 @@ class roles::client {
       persistent => true,
       before     => Nginx::Resource::Server['node_exporter'],
     }
-    selboolean{'httpd_enable_ftp_server':
-      value      => 'on',
-      persistent => true,
-      before     => Nginx::Resource::Server['node_exporter'],
+    selinux::port { 'allow-nginx-9100':
+      ensure   => 'present',
+      seltype  => 'http_port_t',
+      protocol => 'tcp',
+      port     => 9100,
+      before   => Nginx::Resource::Server['node_exporter'],
     }
   }
   nginx::resource::server {'node_exporter':
