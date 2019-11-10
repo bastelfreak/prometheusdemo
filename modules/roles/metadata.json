@@ -51,6 +51,34 @@
     {
       "name": "puppetlabs/stdlib",
       "version_requirement": ">= 6.1.0 < 7.0.0"
+    },
+    {
+      "name": "mod 'KyleAnderson/consul",
+      "version_requirement": ">= 6.0.0 < 7.0.0"
+    },
+    {
+      "name": "puppet/prometheus",
+      "version_requirement": ">= 7.1.0 < 8.0.0"
+    },
+    {
+      "name": "puppet/nginx",
+      "version_requirement": ">= 1.0.0 < 2.0.0"
+    },
+    {
+      "name": "puppet/ferm",
+      "version_requirement": ">= 2.7.0 < 3.0.0"
+    },
+    {
+      "name": "puppet/ipset",
+      "version_requirement": ">= 1.1.0 < 2.0.0"
+    },
+    {
+      "name": "theforeman/puppet",
+      "version_requirement": ">= 12.1.0 < 13.0.0"
+    },
+    {
+      "name": "puppet/selinux",
+      "version_requirement": ">= 3.0.0 < 4.0.0"
     }
   ]
 }
