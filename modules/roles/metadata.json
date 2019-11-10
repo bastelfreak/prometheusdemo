@@ -53,7 +53,7 @@
       "version_requirement": ">= 6.1.0 < 7.0.0"
     },
     {
-      "name": "mod 'KyleAnderson/consul",
+      "name": "KyleAnderson/consul",
       "version_requirement": ">= 6.0.0 < 7.0.0"
     },
     {
