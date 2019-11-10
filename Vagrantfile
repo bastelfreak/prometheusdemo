@@ -66,6 +66,7 @@ Vagrant.configure("2") do |config|
         sed -i '/127.0.0.1.*archclient.*archclient/g' /etc/hosts
         pacman -S --refresh --sysupgrade --noconfirm puppet --ignore linux,linux-headers,linux-api-headers,linux-firmware
         puppet agent -t --environment production --server prometheus.local
+        puppet agent -t --environment production --server prometheus.local
       SHELL
     end
   end
