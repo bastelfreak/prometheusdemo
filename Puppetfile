@@ -2,6 +2,7 @@ mod 'puppet-ferm'
 mod 'puppet-prometheus'
 mod 'puppet-nginx'
 mod 'puppet-ipset'
+mod 'puppet-selinux'
 mod 'KyleAnderson-consul'
 mod 'theforeman-puppet'
 # dependencies

@@ -122,6 +122,30 @@ class roles::server {
             'scheme'   => 'http'
           }
         ]
+      },
+      {
+        'job_name'          => 'consul-metrics',
+        'scrape_interval'   => '10s',
+        'scrape_timeout'    => '10s',
+        'scheme'            => 'https',
+        'metrics_path'      => '/v1/agent/metrics',
+        'params'            => {
+          'format' => [
+            'prometheus',
+          ],
+        },
+        'tls_config'        => {
+          'ca_file'   => '/etc/prometheus/ca.pem',
+          'cert_file' => "/etc/prometheus/cert_${trusted['certname']}.pem",
+          'key_file'  => "/etc/prometheus/key_${trusted['certname']}.pem"
+        },
+        'consul_sd_configs' => [
+          {
+            'server'   => 'localhost:8500',
+            'services' => ['consul-metrics'],
+            'scheme'   => 'http'
+          }
+        ]
       }
     ],
   }
@@ -170,23 +194,32 @@ class roles::server {
     selboolean { 'httpd_can_network_connect':
       value      => 'on',
       persistent => true,
-      before     => Nginx::Resource::Server['node_exporter'],
+      before     => [Nginx::Resource::Server['node_exporter'], Nginx::Resource::Server['consul_metrics'],],
     }
     selboolean { 'httpd_can_network_relay':
       value      => 'on',
       persistent => true,
-      before     => Nginx::Resource::Server['node_exporter'],
+      before     => [Nginx::Resource::Server['node_exporter'], Nginx::Resource::Server['consul_metrics']],
     }
     selboolean{'httpd_setrlimit':
       value      => 'on',
       persistent => true,
-      before     => Nginx::Resource::Server['node_exporter'],
+      before     => [Nginx::Resource::Server['node_exporter'], Nginx::Resource::Server['consul_metrics'],],
     }
-    selboolean{'httpd_enable_ftp_server':
-      value      => 'on',
-      persistent => true,
-      before     => Nginx::Resource::Server['node_exporter'],
-    }
+    selinux::port { 'allow-nginx-9100':
+      ensure   => 'present',
+      seltype  => 'http_port_t',
+      protocol => 'tcp',
+      port     => 9100,
+      before   => Nginx::Resource::Server['node_exporter'],
+   }
+    selinux::port { 'allow-nginx-8501':
+      ensure   => 'present',
+      seltype  => 'http_port_t',
+      protocol => 'tcp',
+      port     => 8501,
+      before   => Nginx::Resource::Server['consul_metrics'],
+   }
   }
   nginx::resource::server {'node_exporter':
     listen_ip         => $facts['networking']['interfaces']['eth1']['ip'],
@@ -204,31 +237,58 @@ class roles::server {
     ssl_protocols     => 'TLSv1.2',
     ssl_verify_client => 'on',
   }
+  nginx::resource::server{'consul_metrics':
+    listen_ip         => $facts['networking']['interfaces']['eth1']['ip'],
+    ipv6_enable       => false,
+    server_name       => [$trusted['certname']],
+    listen_port       => 8501,
+    ssl_port          => 8501,
+    ssl               => true,
+    ssl_redirect      => false,
+    ssl_key           => "/etc/nginx/node_exporter_key_${trusted['certname']}.pem",
+    ssl_cert          => "/etc/nginx/node_exporter_cert_${trusted['certname']}.pem",
+    ssl_crl           => '/etc/nginx/node_exporter_puppet_crl.pem',
+    ssl_client_cert   => '/etc/nginx/node_exporter_puppet_ca.pem',
+    ssl_protocols     => 'TLSv1.2',
+    ssl_verify_client => 'on',
+    location_deny     => ['all'],
+
+  }
+  nginx::resource::location{'allow-only-metrics':
+    ensure         => 'present',
+    server         => 'consul_metrics',
+    location       => '/v1/agent/metrics',
+    location_allow => ['127.0.0.1', '192.168.33.10'],
+    location_deny  => ['all'],
+    ssl            => true,
+    ssl_only       => true,
+    proxy          => 'http://localhost:8500',
+  }
   file { "/etc/nginx/node_exporter_key_${trusted['certname']}.pem":
     ensure  => 'file',
     owner   => 'nginx',
     group   => 'nginx',
     mode    => '0400',
     source  => "/etc/puppetlabs/puppet/ssl/private_keys/${trusted['certname']}.pem",
-    notify => Class['nginx::service'],
+    notify  => Class['nginx::service'],
     require => Class['nginx::config'],
   }
   file { "/etc/nginx/node_exporter_cert_${trusted['certname']}.pem":
-    ensure => 'file',
-    owner  => 'nginx',
-    group  => 'nginx',
-    mode   => '0400',
-    source => "/etc/puppetlabs/puppet/ssl/certs/${trusted['certname']}.pem",
-    notify => Class['nginx::service'],
+    ensure  => 'file',
+    owner   => 'nginx',
+    group   => 'nginx',
+    mode    => '0400',
+    source  => "/etc/puppetlabs/puppet/ssl/certs/${trusted['certname']}.pem",
+    notify  => Class['nginx::service'],
     require => Class['nginx::config'],
   }
   file { '/etc/nginx/node_exporter_puppet_crl.pem':
-    ensure => 'file',
-    owner  => 'nginx',
-    group  => 'nginx',
-    mode   => '0400',
-    source => '/etc/puppetlabs/puppet/ssl/crl.pem',
-    notify => Class['nginx::service'],
+    ensure  => 'file',
+    owner   => 'nginx',
+    group   => 'nginx',
+    mode    => '0400',
+    source  => '/etc/puppetlabs/puppet/ssl/crl.pem',
+    notify  => Class['nginx::service'],
     require => Class['nginx::config'],
   }
   file { '/etc/nginx/node_exporter_puppet_ca.pem':
@@ -244,7 +304,7 @@ class roles::server {
     nginx_version => '1.16.1',
   }
   consul::service { 'node-exporter':
-    checks => [
+    checks  => [
       {
         name     => 'node_exporter health check',
         http     => 'http://127.0.0.1:9100',
@@ -252,9 +312,24 @@ class roles::server {
         timeout  => '1s'
       }
     ],
-    port   => 9100,
+    port    => 9100,
     address => $trusted['certname'],
     tags    => ['node-exporter'],
+    require => Nginx::Resource::Server['node_exporter'],
+  }
+  consul::service { 'consul-metrics':
+    checks  => [
+      {
+        name     => 'consul API health check',
+        http     => 'http://127.0.0.1:8500',
+        interval => '10s',
+        timeout  => '1s'
+      }
+    ],
+    port    => 8501,
+    address => $trusted['certname'],
+    tags    => ['consul-server'],
+    require => Nginx::Resource::Server['consul_metrics'],
   }
 
   class{'ferm':
