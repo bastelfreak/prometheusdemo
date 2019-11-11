@@ -109,7 +109,7 @@ class roles::client {
     server_name       => [$trusted['certname']],
     listen_port       => 9100,
     ssl_port          => 9100,
-    proxy             => 'http://localhost:9100',
+    proxy             => 'http://127.0.0.1:9100',
     ssl               => true,
     ssl_redirect      => false,
     ssl_key           => "/etc/nginx/node_exporter_key_${trusted['certname']}.pem",
