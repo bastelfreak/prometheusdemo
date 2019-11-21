@@ -5,6 +5,7 @@
 * [What is this about](#what-is-this-about)
 * [Architecture](#architecture)
 * [Notes](#notes)
+* [How to get started](#how-to-get-started)
 * [Vagrant cheat sheet](#vagrant-cheat-sheet)
 
 ## What is this about
@@ -102,6 +103,60 @@ Remove the `search` option and provision the virtual machines again.
 
 Latest versions of this repository contain an sed statement during the
 provisioning that will remove the mentioned `search` line.
+
+## How to get started
+
+So, you're interested in the Vagrant environment and want to use it. First of
+you need to install virtualbox and Vagrant. A simple `vagrant status` should
+look like this:
+
+```
+~/osmc2019 $ vagrant status
+Current machine states:
+
+server                    not created (virtualbox)
+centosclient              not created (virtualbox)
+archclient                not created (virtualbox)
+ubuntuclient              not created (virtualbox)
+
+This environment represents multiple VMs. The VMs are all listed
+above with their current state. For more information about a specific
+VM, run `vagrant status NAME`.
+~/osmc2019 $
+```
+
+The server needs to be started first. It will provide us a Puppetserver +
+Prometheus:
+
+```sh
+vagrant up server
+```
+
+Afterwards we can provision any of the clients. You can choose between CentOS,
+Arch Linux or Ubuntu. You cannot start multiple instance of one machine.
+Depending on the amount of memory on your box, you can two or all three
+clients:
+
+```sh
+vagrant up centosclient
+vagrant up archclient
+vagrant up ubuntuclient
+```
+
+Vagrant wraps ssh for us. If you want to enter one machine, you can do it like
+this:
+
+```sh
+vagrant ssh server
+```
+
+The Server gets a dedicated role:
+https://github.com/bastelfreak/osmc2019/blob/production/modules/roles/manifests/server.pp
+
+All clients share the same role:
+https://github.com/bastelfreak/osmc2019/blob/production/modules/roles/manifests/client.pp
+
+Exercise: What is the roles and profiles pattern?
 
 ## Vagrant cheat sheet
 
