@@ -58,7 +58,7 @@
     },
     {
       "name": "puppet/prometheus",
-      "version_requirement": ">= 8.2.0 < 9.9.0"
+      "version_requirement": ">= 8.2.1 < 9.9.0"
     },
     {
       "name": "puppet/nginx",
