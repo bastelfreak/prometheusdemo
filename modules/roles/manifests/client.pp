@@ -35,7 +35,7 @@ class roles::client {
     default => $facts['networking']['interfaces']['eth1']['ip'],
   }
   class{'consul':
-    version        => '1.6.1',
+    version        => '1.6.2',
     config_dir     => '/etc/consul.d',
     pretty_config  => true,
     enable_beta_ui => true,

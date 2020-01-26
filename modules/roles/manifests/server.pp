@@ -30,7 +30,7 @@ class roles::server {
     server_ca_allow_sans            => true,
     server_ca_allow_auth_extensions => true,
     # Setup Puppet 5, not 6
-    server_puppetserver_version     => '5.3.10',
+    server_puppetserver_version     => '5.3.11',
     # dont create /etc/puppetlabs/code/environments/common
     server_common_modules_path      => '',
     # don't leak private data to Puppet Inc.
@@ -45,7 +45,7 @@ class roles::server {
   }
 
   class{'consul':
-    version        => '1.6.1',
+    version        => '1.6.2',
     config_dir     => '/etc/consul.d',
     pretty_config  => true,
     enable_beta_ui => true,
@@ -86,7 +86,7 @@ class roles::server {
   }
 
   class{'prometheus::server':
-    version => '2.13.1',
+    version => '2.15.2',
     extra_options  => '--web.enable-admin-api',
     scrape_configs => [
       {

@@ -50,19 +50,19 @@
   "dependencies": [
     {
       "name": "puppetlabs/stdlib",
-      "version_requirement": ">= 6.1.0 < 7.0.0"
+      "version_requirement": ">= 6.2.0 < 7.0.0"
     },
     {
       "name": "KyleAnderson/consul",
-      "version_requirement": ">= 6.0.0 < 7.0.0"
+      "version_requirement": ">= 6.0.1 < 7.0.0"
     },
     {
       "name": "puppet/prometheus",
-      "version_requirement": ">= 7.1.0 < 8.0.0"
+      "version_requirement": ">= 8.2.0 < 9.9.0"
     },
     {
       "name": "puppet/nginx",
-      "version_requirement": ">= 1.0.0 < 2.0.0"
+      "version_requirement": ">= 1.1.0 < 2.0.0"
     },
     {
       "name": "puppet/ferm",
@@ -70,7 +70,7 @@
     },
     {
       "name": "puppet/ipset",
-      "version_requirement": ">= 1.1.0 < 2.0.0"
+      "version_requirement": ">= 1.2.0 < 2.0.0"
     },
     {
       "name": "theforeman/puppet",
@@ -78,7 +78,7 @@
     },
     {
       "name": "puppet/selinux",
-      "version_requirement": ">= 3.0.0 < 4.0.0"
+      "version_requirement": ">= 3.1.0 < 4.0.0"
     }
   ]
 }
