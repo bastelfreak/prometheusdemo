@@ -1,4 +1,4 @@
-# OSMC 2019 - Deploy Prometheus exporters with Puppet at scale
+# Deploy Prometheus exporters with Puppet at scale
 
 ## Table of contents
 
@@ -7,6 +7,8 @@
 * [Notes](#notes)
 * [How to get started](#how-to-get-started)
 * [Vagrant cheat sheet](#vagrant-cheat-sheet)
+* [docs](#docs)
+* [License](#license)
 
 ## What is this about
 
@@ -111,7 +113,7 @@ you need to install virtualbox and Vagrant. A simple `vagrant status` should
 look like this:
 
 ```
-~/osmc2019 $ vagrant status
+~/prometheusdemo $ vagrant status
 Current machine states:
 
 server                    not created (virtualbox)
@@ -122,7 +124,7 @@ ubuntuclient              not created (virtualbox)
 This environment represents multiple VMs. The VMs are all listed
 above with their current state. For more information about a specific
 VM, run `vagrant status NAME`.
-~/osmc2019 $
+~/prometheusdemo $
 ```
 
 The server needs to be started first. It will provide us a Puppetserver +
@@ -151,10 +153,10 @@ vagrant ssh server
 ```
 
 The Server gets a dedicated role:
-https://github.com/bastelfreak/osmc2019/blob/production/modules/roles/manifests/server.pp
+[modules/roles/manifests/server.pp](https://github.com/bastelfreak/prometheusdemo/blob/production/modules/roles/manifests/server.pp)
 
 All clients share the same role:
-https://github.com/bastelfreak/osmc2019/blob/production/modules/roles/manifests/client.pp
+[modules/roles/manifests/client.pp](https://github.com/bastelfreak/prometheusdemo/blob/production/modules/roles/manifests/client.pp)
 
 Exercise: What is the roles and profiles pattern?
 
@@ -257,7 +259,7 @@ Check if Vagrant knows anything about the VM:
 $ vagrant global-status
 id       name   provider   state    directory
 ------------------------------------------------------------------------
-02c90f7  server virtualbox poweroff /home/bastelfreak/osmc2019
+02c90f7  server virtualbox poweroff /home/bastelfreak/prometheusdemo
 
 The above shows information about all known Vagrant environments
 on this machine. This data is cached and may not be completely
@@ -290,3 +292,25 @@ if so, delete it within Virtualbox:
 $ VBoxManage unregistervm 0cec0d5b-6706-426f-8453-900a5ab7b91d --delete
 0%...10%...20%...30%...40%...50%...60%...70%...80%...90%...100%
 ```
+
+## Docs
+
+This repository contains the above explained vagrant environment and a
+slidedeck. I did this presentation at the OSMC 2019 and at the
+configuration management camp 2020 in Gent.
+
+### OSMC 2019
+
+* [online version](https://bastelfreak.de/osmc2019/#1)
+* [pdf](Rollout_all_your_Prometheus_exporters_with_puppet_OSMC2019.pdf)
+* [Video recording](https://www.youtube.com/watch?v=-ijO-g4_7rU)
+
+### configuration management camp 2019
+
+* [online version](https://bastelfreak.de/prometheusdemo/#1)
+* [pdf](Rollout_all_your_Prometheus_exporters_with_puppet_-_CFGMGMTCAMP2020.pdf)
+
+## License
+
+This project contains two licenses. The code is licensed as GNU Affero General
+Public License v3.0. The documentation/text is licsensed as CC BY-NC-SA 4.0.

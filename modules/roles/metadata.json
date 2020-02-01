@@ -5,9 +5,9 @@
   "author": "Tim Meusel",
   "dependencies": [
   ],
-  "source": "https://github.com/bastelfreak/osmc2019.git",
-  "project_page": "https://github.com/bastelfreak/osmc2019",
-  "issues_url": "https://github.com/bastelfeak/osmc2019/issues",
+  "source": "https://github.com/bastelfreak/prometheusdemo.git",
+  "project_page": "https://github.com/bastelfreak/prometheusdemo",
+  "issues_url": "https://github.com/bastelfeak/prometheusdemo/issues",
   "license": "Apache-2.0",
   "tags": [
     "control repo",
