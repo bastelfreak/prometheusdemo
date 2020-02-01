@@ -5,18 +5,41 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <style type="text/css">
       @font-face {
-        font-family: 'Yanone Kaffeesatz';
+        font-family: "Yanone Kaffeesatz";
         font-style: normal;
         font-weight: 400;
-        src: local('Yanone Kaffeesatz Regular'), local('YanoneKaffeesatz-Regular'), url(YDAoLskQQ5MOAgvHUQCcLbvy90DtE_Pg_qiF9bHvTzw.ttf) format('truetype');
+        src: local("Yanone Kaffeesatz Regular"),
+          local("YanoneKaffeesatz-Regular"),
+          url(YDAoLskQQ5MOAgvHUQCcLbvy90DtE_Pg_qiF9bHvTzw.ttf)
+            format("truetype");
       }
-         body {
+      @font-face {
+        font-family: "Ubuntu Mono";
+        font-style: normal;
+        font-weight: 400;
+        src: local("Ubuntu Mono Regular"), local("UbuntuMono-Regular"),
+          url(ViZhet7Ak-LRXZMXzuAfkZ0EAVxt0G0biEntp43Qt6E.ttf)
+            format("truetype");
+      }
+      @font-face {
+        font-family: "Droid Serif";
+        font-style: normal;
+        font-weight: 400;
+        src: local("Droid Serif Regular"), local("DroidSerif-Regular"),
+          url(0aksp294htd-nvJgucYTaJ0EAVxt0G0biEntp43Qt6E.ttf)
+            format("truetype");
+      }
+      body {
         font-family: 'Droid Serif';
       }
       h1, h2, h3 {
         font-family: 'Yanone Kaffeesatz';
         font-weight: 400;
         margin-bottom: 0;
+      }
+      .remark-slide-content {
+        background-image: url(blue-skies.jpg);
+        background-size: cover;
       }
       .remark-slide-content h1 { font-size: 3em; }
       .remark-slide-content h2 { font-size: 2em; }
@@ -168,9 +191,6 @@ class: center, middle, inverse
 
 ---
 
-background-image: url(blue-skies.jpg)
-background-size: cover
-
 ## $ whoami
 
 * Tim 'bastelfreak' Meusel
@@ -193,9 +213,6 @@ class: center, middle, inverse
 
 ---
 
-background-image: url(blue-skies.jpg)
-background-size: cover
-
 .left-column[
 ## Starting Point
 ]
@@ -212,8 +229,6 @@ background-size: cover
 
 ---
 
-background-image: url(blue-skies.jpg)
-background-size: cover
 count: false
 
 .left-column[
@@ -234,8 +249,6 @@ count: false
 
 ---
 
-background-image: url(blue-skies.jpg)
-background-size: cover
 count: false
 
 .left-column[
@@ -258,8 +271,6 @@ count: false
 
 ---
 
-background-image: url(blue-skies.jpg)
-background-size: cover
 count: false
 
 .left-column[
@@ -286,8 +297,6 @@ count: false
 
 ---
 
-background-image: url(blue-skies.jpg)
-background-size: cover
 count: false
 
 .left-column[
@@ -322,9 +331,6 @@ class: center, middle, inverse
 ## Or: The Happy Phase
 ---
 
-background-image: url(blue-skies.jpg)
-background-size: cover
-
 .left-column[
 ## Starting Point
 ## Exploration
@@ -342,8 +348,6 @@ background-size: cover
 
 ---
 
-background-image: url(blue-skies.jpg)
-background-size: cover
 count: false
 
 .left-column[
@@ -375,9 +379,6 @@ curl http://localhost:9100/metrics --silent | grep -v '^#' -c
 
 ---
 
-background-image: url(blue-skies.jpg)
-background-size: cover
-
 .left-column[
 ## Starting Point
 ## Exploration
@@ -399,8 +400,6 @@ Prometheus Exporters:
 * Prometheus collectors https://github.com/prometheus/node_exporter/#enabled-by-default
 ---
 
-background-image: url(blue-skies.jpg)
-background-size: cover
 count: false
 
 .left-column[
@@ -426,8 +425,6 @@ Prometheus Exporters:
 * Prometheus collectors https://github.com/prometheus/node_exporter/#enabled-by-default
 ---
 
-background-image: url(blue-skies.jpg)
-background-size: cover
 count: false
 
 .left-column[
@@ -455,8 +452,6 @@ Prometheus Exporters:
 * Prometheus collectors https://github.com/prometheus/node_exporter/#enabled-by-default
 ---
 
-background-image: url(blue-skies.jpg)
-background-size: cover
 count: false
 
 .left-column[
@@ -491,9 +486,6 @@ Prometheus Exporters:
 
 ---
 
-background-image: url(blue-skies.jpg)
-background-size: cover
-
 .left-column[
 ## Starting Point
 ## Exploration
@@ -526,9 +518,6 @@ promhttp_metric_handler_requests_total{code="503"} 0
 
 ---
 
-background-image: url(blue-skies.jpg)
-background-size: cover
-
 .left-column[
 ## Starting Point
 ## Exploration
@@ -548,8 +537,6 @@ background-size: cover
 
 ---
 
-background-image: url(blue-skies.jpg)
-background-size: cover
 count: false
 
 .left-column[
@@ -577,8 +564,6 @@ Let them write into a txt file that node_exporter can read
 
 ---
 
-background-image: url(blue-skies.jpg)
-background-size: cover
 count: false
 
 .left-column[
@@ -604,8 +589,6 @@ count: false
 
 ---
 
-background-image: url(blue-skies.jpg)
-background-size: cover
 count: false
 
 .left-column[
@@ -640,9 +623,6 @@ class: center, middle, inverse
 
 ---
 
-background-image: url(blue-skies.jpg)
-background-size: cover
-
 .left-column[
 ## Starting Point
 ## Exploration
@@ -663,9 +643,6 @@ include prometheus::node_exporter
 ???
 
 ---
-
-background-image: url(blue-skies.jpg)
-background-size: cover
 
 .left-column[
 ## Starting Point
@@ -688,9 +665,6 @@ background-size: cover
 ???
 
 ---
-
-background-image: url(blue-skies.jpg)
-background-size: cover
 
 .left-column[
 ## Starting Point
@@ -717,9 +691,6 @@ background-size: cover
 
 ---
 
-background-image: url(blue-skies.jpg)
-background-size: cover
-
 .left-column[
 ## Starting Point
 ## Exploration
@@ -736,9 +707,6 @@ background-size: cover
 ???
 
 ---
-
-background-image: url(blue-skies.jpg)
-background-size: cover
 
 .left-column[
 ## Starting Point
@@ -757,9 +725,6 @@ Take a look at [./examples/node_exporter_consul.pp](https://github.com/bastelfre
 ???
 
 ---
-
-background-image: url(blue-skies.jpg)
-background-size: cover
 
 .left-column[
 ## Starting Point
@@ -785,9 +750,6 @@ background-size: cover
 
 ---
 
-background-image: url(blue-skies.jpg)
-background-size: cover
-
 .left-column[
 ## Starting Point
 ## Exploration
@@ -807,9 +769,6 @@ Take a look at [./examples/node_exporter_profile.pp](https://github.com/bastelfr
 ???
 
 ---
-
-background-image: url(blue-skies.jpg)
-background-size: cover
 
 .left-column[
 ## Starting Point
@@ -839,8 +798,6 @@ Consul:
 * agent to server communication will be handled with TLS. Client certificates are validated.
 
 ---
-background-image: url(blue-skies.jpg)
-background-size: cover
 
 .left-column[
 ## Starting Point
@@ -865,8 +822,6 @@ background-size: cover
 
 ---
 
-background-image: url(blue-skies.jpg)
-background-size: cover
 count: false
 
 .left-column[
@@ -896,8 +851,6 @@ count: false
 
 ---
 
-background-image: url(blue-skies.jpg)
-background-size: cover
 count: false
 
 .left-column[
@@ -927,9 +880,6 @@ count: false
 * or you add more boxes
 
 ---
-
-background-image: url(blue-skies.jpg)
-background-size: cover
 
 .left-column[
 ## Starting Point
@@ -971,9 +921,6 @@ class profiles::node_exporter {
 
 ---
 
-background-image: url(blue-skies.jpg)
-background-size: cover
-
 .left-column[
 ## Starting Point
 ## Exploration
@@ -1004,9 +951,6 @@ Consul:
 * Consul is currently plaintext
 
 ---
-
-background-image: url(blue-skies.jpg)
-background-size: cover
 
 .left-column[
 ## Starting Point
@@ -1042,9 +986,6 @@ ipsets and separate chains to the rescue!
 
 ---
 
-background-image: url(blue-skies.jpg)
-background-size: cover
-
 .left-column[
 ## Starting Point
 ## Exploration
@@ -1073,9 +1014,6 @@ class: center, middle, inverse
 
 ---
 
-background-image: url(blue-skies.jpg)
-background-size: cover
-
 .left-column[
 ## Starting Point
 ## Exploration
@@ -1098,8 +1036,6 @@ background-size: cover
 
 ---
 
-background-image: url(blue-skies.jpg)
-background-size: cover
 count: false
 
 .left-column[
@@ -1126,8 +1062,6 @@ count: false
 
 ---
 
-background-image: url(blue-skies.jpg)
-background-size: cover
 count: false
 
 .left-column[
@@ -1159,8 +1093,6 @@ count: false
 
 ---
 
-background-image: url(blue-skies.jpg)
-background-size: cover
 count: false
 
 .left-column[
